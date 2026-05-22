@@ -73,3 +73,42 @@ Once Ripley approves the plan and clarifies the three questions above, I can sta
 **Week 1 watch:** After T1 verification, Parker (T4 OTel) and Ash (T3 provider audit) begin parallel work. Ripley gates R1 checkpoint (abstraction map review) at end of Week 1.
 
 **Ready to execute Week 1 plan.**
+
+---
+
+## M1 T1 Complete — 2026-05-22
+
+✅ **T1 COMPLETE** — Solution structure scaffolded and verified.
+
+**Deliverables:**
+- ✅ HermesNET.sln at repo root with 3 projects (Hermes.Core, Hermes.Host, Hermes.Cli) in organized folder structure
+- ✅ Directory.Build.props — centralized build config (C# 13, nullable, ImplicitUsings, TreatWarningsAsErrors)
+- ✅ Directory.Packages.props — single source of truth for NuGet versions (no per-project Version attributes)
+- ✅ global.json — enforces .NET 10.0 SDK constraint
+- ✅ Initial packages installed:
+  - Microsoft.Extensions.AI.Abstractions (9.5.0)
+  - Microsoft.Extensions.Configuration (10.0.0)
+  - Microsoft.Extensions.DependencyInjection (10.0.0)
+  - Microsoft.EntityFrameworkCore (10.0.0)
+  - System.CommandLine (2.0.0)
+  - OpenTelemetry (1.13.0)
+  - OpenTelemetry.Exporter.Console (1.13.0)
+  - xUnit (2.6.0) + test infrastructure
+- ✅ .gitignore configured (bin/, obj/, .vs/, coverage/, artifacts/)
+- ✅ README.md updated with project structure, build instructions, architecture overview
+- ✅ `dotnet build` **succeeds with zero warnings** ✓
+- ✅ All three projects compile and are ready for code
+
+**Build Verification:**
+```
+Build succeeded in 3.8s
+```
+
+**Next Steps:**
+T1 unblocks T2 (provider wiring), T3 (MAF host), T4 (OTel baseline). T2 starts 2026-05-24 (Dallas + Ripley co-own R1 validation spike).
+
+**Risk Status:**
+- R1 (Integration Drift) — Ready for spike (T2)
+- R5 (Skills/Scale) — Ready for implementation (T6–T9, Week 2)
+
+**Go/No-Go:** T1 passes acceptance criteria. All conditions GREEN. Ready for T2.
