@@ -202,6 +202,191 @@ Ripley validates map; zero mismatches found. PR merged with explicit "R1 GREEN" 
 
 ---
 
+### M2-001 — M2 Decisions Locked
+
+**Date:** 2026-05-22  
+**Authority:** Ripley  
+**Status:** ✅ LOCKED — M2 scope, quality gates, critical path finalized. Start date: May 26.
+
+**Decision:** M2 scope, quality gates, critical path, and team assignments are locked after kickoff ceremony. All prerequisites (M1 validation, task breakdown, risk assessment) complete. Ready to execute.
+
+**Rationale:** Formal M2 alignment ensures all prerequisites met. Formal M2 alignment; all prerequisites (M1 validation, task breakdown, risk assessment) complete.
+
+**Reference:** `.squad/decisions/m2-kickoff.md`
+
+---
+
+### M2-002 — Profile and Session Management Contracts
+
+**Date:** 2026-05-22T17:14:32.037-04:00  
+**Authority:** Dallas  
+**Status:** ✅ IMPLEMENTED — builds clean, 92/92 new tests pass
+
+**Decision:** Profile and session management use separate `IProfileService` and `ISessionService` interfaces. SQLite backend uses ADO.NET (no EF Core overhead). AppState table persists current profile/session pointers. SessionService enforces R2 isolation by checking session.ProfileId against current profile. ProfileSessions table is separate from M1 Sessions table.
+
+**CLI Commands Delivered:**
+```
+hermes profile create "My Profile" [--description "..."]
+hermes profile list
+hermes profile switch <name-or-id>
+hermes profile current
+hermes session create "Chat Session" [--profile <profileId>]
+hermes session list [--profile <profileId>]
+hermes session switch <id>
+hermes session current
+```
+
+**R2 Coordination:** Parker depends on `ISessionService` for memory scoping. SessionService takes `IProfileService` as dependency for cross-profile enforcement.
+
+---
+
+### M2-003 — T14 Design Unknowns (Dallas Flagged for Review)
+
+**Date:** 2026-05-22T17:24:27.189-04:00  
+**Authority:** Dallas  
+**Status:** ⚠️ FLAGGED — Decisions assumed, team review required before M3
+
+**Three ambiguities flagged:**
+
+1. **Skill ID Uniqueness Scope** — Assumed global uniqueness; DuplicateSkillException on collision. Risk: 50+ skills may need namespacing (e.g., "math/calculate-sum"). Consider M3 decision.
+
+2. **Skill Versioning Strategy** — Assumed one version per skill ID; first file wins. Risk: M3 live reload may require explicit version coexistence. Ripley to decide: "latest version wins" or "explicit version coexistence".
+
+3. **Metadata Structure Enforcement** — Assumed flexible free-form key-value pairs, no schema. Risk: T16 policy engine may require typed metadata. Lock consistent format before T16 ships if needed.
+
+---
+
+### M2-004 — M2 Test Strategy Finalized (Lambert)
+
+**Date:** 2026-05-22  
+**Authority:** Lambert  
+**Status:** ✅ COMPLETE — Strategy finalized, scaffold created
+
+**Key Decisions:**
+
+- **Coverage Target Raised to 85%** per-module branch coverage on Profiles, Sessions, Skills, Memory
+- **R2 Gate: Zero-Tolerance** — `MemoryIsolation_TwoProfiles_NoContamination` hard gate; no partial credit
+- **Error Contract Consistency** — Extends M1-011; all M2 store operations throw `KeyNotFoundException` on missing IDs
+- **Blocked Tests as Living Contracts** — All scaffolds have `Skip = "Blocked: [interface]..."` to compile immediately; removal signals implementation completion
+- **REST API Contract Tests Required** — All endpoints require tests in `Hermes.Integration.Tests/`; OpenAPI spec committed before M2 Go/No-Go
+
+**Pre-Existing Failures Found:**
+| Test | Expected | Actual |
+|------|----------|--------|
+| `DeleteProfile_MissingId_Throws` | `KeyNotFoundException` | `InvalidOperationException: This SqliteTransaction has completed` |
+| `DeleteSession_Missing_Throws` | `KeyNotFoundException` | `InvalidOperationException: This SqliteTransaction has completed` |
+
+**Action:** Dallas must fix transaction lifecycle in delete methods before M2 Week 1 exit.
+
+---
+
+### M2-005 — T14 Verdict: SkillRegistry GREEN (Lambert)
+
+**Date:** 2026-05-22T17:24:27-04:00  
+**Authority:** Lambert  
+**Status:** ✅ GREEN — All T14 tests pass
+
+**Results:**
+- Total tests: 18
+- Passed: 18
+- Failed: 0
+- Skipped: 0
+- Duration: 0.7s
+
+**Implementation Files Verified:**
+- ✅ `src/Hermes.Core/Skills/ISkillRegistry.cs`
+- ✅ `src/Hermes.Core/Skills/SkillRegistry.cs`
+
+---
+
+### M2-006 — T15 Verdict: Memory & R2 Isolation GREEN (Lambert)
+
+**Date:** 2026-05-22T17:24:27-04:00  
+**Authority:** Lambert  
+**Status:** ✅ GREEN — R2 isolation gate PASSED
+
+**R2 ISOLATION GATE PASSED:**
+- `MemoryIsolation_FullStack_ProfileACannotReadProfileBMemory` ✅
+- 7 supporting isolation tests ✅
+- No cross-profile data leakage detected
+
+**Test Counts:**
+| Class | Tests | Result |
+|---|---|---|
+| `CuratedMemoryLoaderTests` (Memory) | 16 | ✅ All passed |
+| `MemoryIsolationTests` (Memory unit) | 15 | ✅ All passed |
+| `MemoryIsolationTests` (Integration) | 3 | ✅ All passed (Skip removed) |
+| **T15 total** | **34** | ✅ 34/34 |
+
+**Source Files Verified:**
+- ✅ `src/Hermes.Core/Memory/CuratedMemoryLoader.cs`
+- ✅ `src/Hermes.Core/Memory/MemoryUpdateHandler.cs`
+
+---
+
+### M2-007 — Curated Memory Schema + Profile Scoping (Parker)
+
+**Date:** 2026-05-22  
+**Authority:** Parker  
+**Status:** ✅ COMMITTED — R2 GREEN
+
+**Decision:** Two-table SQLite schema (Memory + UserProfiles) with hard profile isolation enforced at DB layer. `IMemoryService` interface: LoadMemoryAsync, UpdateMemoryAsync, LoadUserProfileAsync, UpdateUserProfileAsync, GetMemorySchemaAsync. All methods profile-scoped. Schema validation: 64 KB max, Markdown-only format in MVP. Migration: `002_MemorySchema.sql`.
+
+**R2 Checkpoint: GREEN**
+- 15/15 isolation tests pass
+- Latency baseline: < 50 ms for 2 KB content on in-memory SQLite
+
+**Deferred to M3:**
+- Section-level MEMORY.md merging (full-replace only in M2)
+- Encrypted memory at rest
+- `IRetrievalMemoryProvider` (RAG layer)
+- Memory diff/audit trail
+- Profile-level memory quotas
+
+**Coordination Notes:**
+- Dallas (T13): When profiles table ships, add FK constraint in `003_MemoryProfileFK.sql`
+- Lambert: R2 test coverage in `Memory/MemoryIsolationTests.cs`
+
+---
+
+### M2-008 — T16 Coordination: Memory-Policy Access Contract (Parker → Ash)
+
+**Date:** 2026-05-22T17:24:27.189-04:00  
+**From:** Parker (Data/Memory Dev)  
+**To:** Ash (T16 — Tool Registry + Policy)  
+**Status:** For Review — T16 planning input
+
+**Policy Rule Memory Access Contract:**
+```csharp
+var memCtx = await loader.LoadMemoryAsync(profileId);
+if (!memCtx.IsEmpty)
+{
+    var block = memCtx.ToMemoryBlock(); // Markdown block for system-prompt
+}
+
+try
+{
+    var userProfile = await loader.LoadUserProfileAsync(profileId);
+    var userBlock = userProfile.ToMemoryBlock();
+}
+catch (KeyNotFoundException)
+{
+    // No USER.md written — policy continues without user preferences
+}
+```
+
+**Key Contracts for T16:**
+| API | Behaviour |
+|---|---|
+| `CuratedMemoryLoader.LoadMemoryAsync(profileId)` | Returns `MemoryContext` (possibly Empty); cache-backed; never cross-profile |
+| `MemoryContext.IsEmpty` | True when no memory written; policy should skip injection |
+| `MemoryContext.ToMemoryBlock()` | Formatted Markdown block; empty if IsEmpty |
+| `CuratedMemoryLoader.LoadUserProfileAsync(profileId)` | Returns `UserProfileData`; throws `KeyNotFoundException` if never written |
+
+**Open Question:** Should policy rules receive pre-loaded MemoryContext from invocation context or call CuratedMemoryLoader themselves? Parker recommends pre-loading at session boundary.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus
