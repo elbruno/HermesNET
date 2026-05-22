@@ -4,4 +4,8 @@
     <Project Path="src/Hermes.Core/Hermes.Core.csproj" />
     <Project Path="src/Hermes.Host/Hermes.Host.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Hermes.Core.Tests/Hermes.Core.Tests.csproj" />
+    <Project Path="tests/Hermes.Benchmarks/Hermes.Benchmarks.csproj" />
+  </Folder>
 </Solution>
