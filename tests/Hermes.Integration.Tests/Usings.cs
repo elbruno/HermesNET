@@ -1,0 +1,8 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Threading.Tasks;
+global using FluentAssertions;
+global using Hermes.Core.Session;
+global using Hermes.Core.Services;
+global using Hermes.Core.Telemetry;
+global using Xunit;
