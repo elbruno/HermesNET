@@ -122,6 +122,40 @@ This baseline becomes the reference point for R5 (load test):
 - OTel overhead is measurable and acceptable (M2 gate: no >20% overhead)
 - Results feed into M2 optimization decisions
 
+## M1 T10 Complete — Performance Baseline Harness — 2026-05-22
+
+✅ **COMPLETED:** Stopwatch/xUnit benchmark harness built and committed. Harness skips gracefully without Ollama; real measurements auto-populate `docs/benchmarks/m1-perf-baseline.md` on run.
+
+### Deliverables
+
+1. **`tests/Hermes.Benchmarks/Hermes.Benchmarks.csproj`** — New test project (net10.0, xUnit)
+   - References Hermes.Core + Hermes.Host
+   - Registered in `HermesNET.slnx`
+
+2. **`tests/Hermes.Benchmarks/ChatLoopBenchmark.cs`** — T10 harness
+   - 50 runs: 5 warm-up + 45 measured
+   - Full DI wiring: `ChatClientFactory` → `OllamaClient` → `HermesChatService`
+   - OTel spans on every run (`hermes.chat.turn` + `hermes.provider.call`)
+   - Graceful Ollama availability check (`[Trait("Category", "RequiresOllama")]`)
+   - P50/P95/P99 via sorted-index method; asserts P95 ≤ 100 ms
+   - Auto-writes results to `docs/benchmarks/m1-perf-baseline.md`
+
+3. **`docs/benchmarks/m1-perf-baseline.md`** — Baseline documentation
+   - T4 simulated context: P95 = 55 ms (reference)
+   - Real Ollama slots: TBD (pending `ollama serve`)
+   - M2 regression threshold: P95 > 120 ms triggers investigation
+
+### How to Complete the Measurement
+
+```bash
+ollama serve && ollama pull llama2
+dotnet test tests/Hermes.Benchmarks --filter "Category=RequiresOllama" --logger "console;verbosity=detailed"
+```
+
+### Coordinate with Dallas (T11)
+
+After T6 (session store), re-run harness. Goal: P95 still ≤ 100 ms post-T6.
+
 ---
 
 ## Week 2 Kickoff — OTel Baseline Validated
