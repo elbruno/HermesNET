@@ -69,3 +69,51 @@ Awaiting clarity on whether provider audit work overlaps with R1 or is a separat
 **Week 1 watch:** T5 (dependency audit) parallel to T3. Confirm `dotnet list package --vulnerable` shows zero critical CVEs. GitHub Dependabot enabled. R1 checkpoint at end of week (independent of provider audit; Ripley owns architecture validation).
 
 **Ready to execute security baseline.**
+
+---
+
+## M1 T3 Complete — Security Baseline Audit — 2026-05-22
+
+✅ **AUDIT COMPLETE. M1 SECURITY BASELINE GREEN.**
+
+**Dependency Audit:**
+- `dotnet list package --vulnerable` executed across Hermes.Core, Hermes.Host, Hermes.Cli
+- **Result:** Zero critical CVEs, zero high CVEs, zero medium CVEs → **PASS**
+
+**Secret Scanning:**
+- Git history scanned for API keys, passwords, tokens, credentials
+- Current files scanned for hardcoded secrets
+- **Result:** Zero secrets found → **PASS**
+
+**Licensing Audit:**
+- All 12 direct dependencies verified against NuGet licenses
+- Microsoft.Extensions.* (9.5–10.0): MIT
+- System.CommandLine (2.0.0): MIT
+- OpenTelemetry (1.13.0): Apache 2.0
+- Entity Framework Core (10.0.0): MIT/Apache 2.0
+- xUnit & test tools: Apache 2.0/MIT
+- **Result:** 100% compatible with HermesNET MIT license → **PASS**
+
+**Provider Audit:**
+- **Ollama:** Apache 2.0 licensed, open-source, local execution, no vendor lock → **APPROVED for M1**
+- **OpenAI SDK:** MIT licensed, industry standard, approved for M2+ integration
+- **Abstraction:** `Microsoft.Extensions.AI.IChatClient` + `ChatClientFactory` decouples provider routing
+
+**CVE Thresholds:**
+- Critical: threshold 0, current 0 → **PASS**
+- High: threshold 0, current 0 → **PASS**
+- Medium: threshold ≤2, current 0 → **PASS**
+
+**Deliverables:**
+1. ✅ `SECURITY.md` — comprehensive audit report (baseline, CVE tracking, monitoring)
+2. ✅ `.github/dependabot.yml` — Dependabot configuration (weekly NuGet scans, auto-PRs)
+3. ✅ Dependency audit confirmed via tooling
+4. ✅ No hardcoded secrets found
+
+**Ongoing Monitoring:**
+- GitHub Dependabot: enabled, configured for weekly NuGet scans
+- Review cadence: weekly (Dependabot PRs reviewed + merged post-CI)
+- Future medium+ CVEs: documented in SECURITY.md with review notes
+
+**Status:** Ready for M2 provider integration. Provider path is secure, decoupled, and appropriately licensed.
+
