@@ -53,6 +53,35 @@ Team initialized for PRD-first planning. No implementation started.
 
 ---
 
+## M1 Completion — T11 + T12 Go/No-Go — 2026-05-22
+
+### M1 APPROVED ✅
+
+**All 6 quality gates PASS. R1 GREEN. R5 GREEN. 50/50 tests passing.**
+
+**T11 — E2E Smoke Test:**
+- Created `tests/Hermes.Integration.Tests/E2ESmokeTest.cs` (3 tests)
+- Full CLI→DI→SessionStore→Provider chain verified with mock IChatClient
+- OTel spans confirmed: `hermes.chat.turn`, `hermes.provider.call`, `hermes.session.persist` all captured via ActivityListener
+- Session persisted and retrievable from in-memory SQLite
+
+**T12 — Go/No-Go Decision:** M1 COMPLETE ✅
+
+| Gate | Result | Evidence |
+|------|--------|----------|
+| Coverage ≥80% | ✅ 87.5% branch | Coverlet (Hermes.Core) |
+| Zero warnings | ✅ 0 warnings | `dotnet build /p:TreatWarningsAsErrors=true` |
+| Zero CVEs | ✅ 0 critical/high | SECURITY.md + Dependabot |
+| R1 Integration | ✅ 5/5 pass | ChatClientFactoryTests.cs |
+| OTel Baseline | ✅ P95=51ms ≤ 100ms | M1-BASELINE.txt |
+| R5 Load Test | ✅ P95 insert 12µs, query 176µs | m1-session-load.md |
+
+**Spec divergence resolved (M1-011):** `SessionStore.DeleteAsync` and `UpdateAsync` throw `KeyNotFoundException` for missing IDs (fail-fast wins; spec updated).
+
+**M2 cleared.** Reference `.squad/decisions/m2-kickoff.md`.
+
+---
+
 ## M1 Blocker Resolution — 2026-05-22
 
 ### All 7 Critical Blockers RESOLVED
