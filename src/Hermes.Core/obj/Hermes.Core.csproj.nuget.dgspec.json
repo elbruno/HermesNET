@@ -64,9 +64,9 @@
               "version": "[10.0.0, )",
               "versionCentrallyManaged": true
             },
-            "Microsoft.Extensions.AI.Abstractions": {
+            "Microsoft.Extensions.AI": {
               "target": "Package",
-              "version": "[9.5.0, )",
+              "version": "[10.6.0, )",
               "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Configuration": {
@@ -93,7 +93,8 @@
           "centralPackageVersions": {
             "Coverlet.Collector": "6.0.0",
             "Microsoft.EntityFrameworkCore": "10.0.0",
-            "Microsoft.Extensions.AI.Abstractions": "9.5.0",
+            "Microsoft.Extensions.AI": "10.6.0",
+            "Microsoft.Extensions.AI.Abstractions": "10.6.0",
             "Microsoft.Extensions.Configuration": "10.0.0",
             "Microsoft.Extensions.Configuration.Json": "10.0.0",
             "Microsoft.Extensions.DependencyInjection": "10.0.0",

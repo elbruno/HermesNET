@@ -1,0 +1,15 @@
+D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Host.deps.json
+D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Host.dll
+D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Host.pdb
+D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Core.dll
+D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Core.pdb
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.csproj.AssemblyReference.cache
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.GeneratedMSBuildEditorConfig.editorconfig
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.AssemblyInfoInputs.cache
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.AssemblyInfo.cs
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.csproj.CoreCompileInputs.cache
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.H.81A2F2D4.Up2Date
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.dll
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\refint\Hermes.Host.dll
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\Hermes.Host.pdb
+D:\elbruno\HermesNET\src\Hermes.Host\obj\Debug\net10.0\ref\Hermes.Host.dll

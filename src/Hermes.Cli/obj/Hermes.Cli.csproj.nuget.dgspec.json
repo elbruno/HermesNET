@@ -66,9 +66,24 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
+            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
+            },
+            "OpenTelemetry.Exporter.Console": {
+              "target": "Package",
+              "version": "[1.13.0, )",
               "versionCentrallyManaged": true
             },
             "System.CommandLine": {
@@ -80,7 +95,8 @@
           "centralPackageVersions": {
             "Coverlet.Collector": "6.0.0",
             "Microsoft.EntityFrameworkCore": "10.0.0",
-            "Microsoft.Extensions.AI.Abstractions": "9.5.0",
+            "Microsoft.Extensions.AI": "10.6.0",
+            "Microsoft.Extensions.AI.Abstractions": "10.6.0",
             "Microsoft.Extensions.Configuration": "10.0.0",
             "Microsoft.Extensions.Configuration.Json": "10.0.0",
             "Microsoft.Extensions.DependencyInjection": "10.0.0",
@@ -445,9 +461,9 @@
               "version": "[10.0.0, )",
               "versionCentrallyManaged": true
             },
-            "Microsoft.Extensions.AI.Abstractions": {
+            "Microsoft.Extensions.AI": {
               "target": "Package",
-              "version": "[9.5.0, )",
+              "version": "[10.6.0, )",
               "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Configuration": {
@@ -474,7 +490,8 @@
           "centralPackageVersions": {
             "Coverlet.Collector": "6.0.0",
             "Microsoft.EntityFrameworkCore": "10.0.0",
-            "Microsoft.Extensions.AI.Abstractions": "9.5.0",
+            "Microsoft.Extensions.AI": "10.6.0",
+            "Microsoft.Extensions.AI.Abstractions": "10.6.0",
             "Microsoft.Extensions.Configuration": "10.0.0",
             "Microsoft.Extensions.Configuration.Json": "10.0.0",
             "Microsoft.Extensions.DependencyInjection": "10.0.0",
@@ -838,9 +855,9 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
-            "Microsoft.Extensions.AI.Abstractions": {
+            "Microsoft.Extensions.AI": {
               "target": "Package",
-              "version": "[9.5.0, )",
+              "version": "[10.6.0, )",
               "versionCentrallyManaged": true
             },
             "Microsoft.Extensions.Configuration": {
@@ -867,7 +884,8 @@
           "centralPackageVersions": {
             "Coverlet.Collector": "6.0.0",
             "Microsoft.EntityFrameworkCore": "10.0.0",
-            "Microsoft.Extensions.AI.Abstractions": "9.5.0",
+            "Microsoft.Extensions.AI": "10.6.0",
+            "Microsoft.Extensions.AI.Abstractions": "10.6.0",
             "Microsoft.Extensions.Configuration": "10.0.0",
             "Microsoft.Extensions.Configuration.Json": "10.0.0",
             "Microsoft.Extensions.DependencyInjection": "10.0.0",

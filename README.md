@@ -83,7 +83,7 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 
 ### Core Packages
 
-- **Microsoft.Extensions.AI.Abstractions** — IChatClient abstraction
+- **Microsoft.Extensions.AI** — IChatClient abstraction for provider integration
 - **Microsoft.Extensions.DependencyInjection** — Service container
 - **Microsoft.Extensions.Configuration** — Settings management
 - **Microsoft.EntityFrameworkCore** — Data persistence (EF Core)
@@ -101,7 +101,22 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 ### Running the CLI
 
 ```bash
-dotnet run --project src/Hermes.Cli -- chat --profile default --message "Hello"
+# Start Ollama locally (if using local provider)
+ollama serve
+
+# In another terminal, run the Hermes CLI
+dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
+```
+
+**Configuration:** The CLI uses `appsettings.json` in the Hermes.Cli project:
+```json
+{
+  "Provider": "Ollama",  // Switch to "OpenAI" for cloud provider
+  "Ollama": {
+    "BaseUrl": "http://localhost:11434",
+    "Model": "llama2"
+  }
+}
 ```
 
 ### Build from Visual Studio

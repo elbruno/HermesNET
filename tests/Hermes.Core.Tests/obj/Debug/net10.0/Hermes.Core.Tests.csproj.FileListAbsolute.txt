@@ -1,0 +1,7 @@
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\bin\Debug\net10.0\.msCoverageSourceRootsMapping_Hermes.Core.Tests
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\bin\Debug\net10.0\CoverletSourceRootsMapping_Hermes.Core.Tests
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\obj\Debug\net10.0\Hermes.Core.Tests.csproj.AssemblyReference.cache
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\obj\Debug\net10.0\Hermes.Core.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\obj\Debug\net10.0\Hermes.Core.Tests.AssemblyInfoInputs.cache
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\obj\Debug\net10.0\Hermes.Core.Tests.AssemblyInfo.cs
+D:\elbruno\HermesNET\tests\Hermes.Core.Tests\obj\Debug\net10.0\Hermes.Core.Tests.csproj.CoreCompileInputs.cache
