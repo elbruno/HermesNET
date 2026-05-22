@@ -158,6 +158,48 @@ After T6 (session store), re-run harness. Goal: P95 still ≤ 100 ms post-T6.
 
 ---
 
+## T10 Live Ollama Run — M1 Gate Executed — 2026-05-22T20:29 UTC
+
+⚠️ **GATE: ❌ P95 OVER BUDGET** — Real Ollama run completed. P95=4090ms vs 100ms budget.
+Stack overhead confirmed ≤2ms. Failure is CPU-only inference, not Hermes code.
+
+### Real Measurement Results (45 measured runs, `nemotron-3-nano:4b`, CPU)
+
+| Metric | Value     | Budget | Status         |
+|--------|-----------|--------|----------------|
+| P50    | 738 ms    | —      | ✅              |
+| P95    | 4090 ms   | 100 ms | ❌ OVER BUDGET |
+| P99    | 13065 ms  | —      | ⚠️              |
+| Min    | 412 ms    | —      | —              |
+| Max    | 13065 ms  | —      | —              |
+| Avg    | 1362 ms   | —      | —              |
+
+### Root Cause
+
+- **Infrastructure-only failure.** Ollama CPU inference = ~99.7% of turn latency.
+- Hermes stack (DI + OTel + HTTP) = ~2ms overhead per turn ✅ (well under budget).
+- OTel span hierarchy `hermes.chat.turn` → `hermes.provider.call` confirmed correct.
+- `llama2` model not available; used `nemotron-3-nano:4b` (fastest available, 4B CPU).
+
+### Bug Fixed
+
+- **`OllamaClient.cs`**: `System.Text.Json` was silently returning empty content.
+  - Added `PropertyNameCaseInsensitive = true` to `JsonSerializerOptions`
+  - Removed `required` keyword from private DTO classes (breaks deserialization in .NET 10)
+
+### Escalation
+
+Escalated to Ripley per failure-handling protocol (P95 > 150ms threshold exceeded).
+Remediation: GPU-accelerated Ollama OR smaller model (`smollm2:135m`, `qwen2.5:0.5b`).
+
+### Committed Files
+
+- `docs/benchmarks/m1-perf-baseline.md` — Full results, histogram, OTel span structure
+- `tests/Hermes.Benchmarks/ChatLoopBenchmark.cs` — Model updated to `nemotron-3-nano:4b`
+- `src/Hermes.Host/Providers/OllamaClient.cs` — Deserialization fix
+
+---
+
 ## Week 2 Kickoff — OTel Baseline Validated
 **2026-05-22 — Team Update from Scribe**
 

@@ -137,7 +137,7 @@ public class ChatLoopBenchmark
             {
                 ["Provider"] = "Ollama",
                 ["Ollama:BaseUrl"] = OllamaBaseUrl,
-                ["Ollama:Model"] = "llama2"
+                ["Ollama:Model"] = "nemotron-3-nano:4b"
             })
             .Build();
 
@@ -188,7 +188,7 @@ public class ChatLoopBenchmark
 
             **Date:** {DateTime.UtcNow:yyyy-MM-dd}
             **Time:** {DateTime.UtcNow:HH:mm:ss} UTC
-            **Environment:** Local Ollama (`llama2` model), Windows, Hermes.Core + Hermes.Host (no load test)
+            **Environment:** Local Ollama (`nemotron-3-nano:4b` model), Windows, Hermes.Core + Hermes.Host (no load test)
             **Test:** `ChatAsync("What is 2+2?")` × {WarmUpRuns + MeasuredRuns} runs ({WarmUpRuns} warm-up + {MeasuredRuns} measured)
             **OTel:** Console exporter ON (baseline includes telemetry overhead)
 

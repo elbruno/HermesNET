@@ -41,7 +41,11 @@ public class OllamaClient : IChatClient
             response.EnsureSuccessStatusCode();
 
             var jsonResponse = await response.Content.ReadAsStringAsync(cancellationToken);
-            var ollamaResponse = System.Text.Json.JsonSerializer.Deserialize<OllamaResponse>(jsonResponse);
+            var opts = new System.Text.Json.JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            var ollamaResponse = System.Text.Json.JsonSerializer.Deserialize<OllamaResponse>(jsonResponse, opts);
 
             return ollamaResponse?.Message?.Content ?? string.Empty;
         }
@@ -58,15 +62,15 @@ public class OllamaClient : IChatClient
 
     private class OllamaRequest
     {
-        public required string Model { get; set; }
-        public required List<OllamaMessage> Messages { get; set; }
+        public string Model { get; set; } = string.Empty;
+        public List<OllamaMessage> Messages { get; set; } = new();
         public bool Stream { get; set; }
     }
 
     private class OllamaMessage
     {
-        public required string Role { get; set; }
-        public required string Content { get; set; }
+        public string Role { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty;
     }
 
     private class OllamaResponse
