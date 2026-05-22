@@ -129,7 +129,80 @@ dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
 
 - **Milestone 1 Plan** — See `docs/research/plan.md`
 - **Architecture Decisions** — See `.squad/decisions.md`
+- **Testing & Quality Gates** — See `docs/testing/`
+  - [Test Framework Specification](./docs/testing/TEST-FRAMEWORK.md)
+  - [M1 Quality Gates](./docs/testing/M1-QUALITY-GATES.md)
+  - [Test Conventions](./docs/testing/TEST-CONVENTIONS.md)
+  - [CLI Smoke Test](./docs/testing/CLI-SMOKE-TEST.md)
+  - [M1 Task Acceptance Criteria](./docs/testing/M1-TASK-CRITERIA.md)
 - **Benchmarks** — See `docs/benchmarks/`
+- **M1 Baseline** — See `M1-BASELINE.txt` (OTel baseline measurements)
+
+## OpenTelemetry Instrumentation
+
+Hermes uses **OpenTelemetry** for distributed tracing and observability from Day 1. This enables early detection of performance regressions and overhead measurements.
+
+### Architecture
+
+The instrumentation strategy centers around three span types:
+
+1. **Turn Span** (`hermes.chat.turn`) — Root span wrapping the entire user request
+   - Tags: `turn.id`, `message.length`, `response.length`
+   - Measures: End-to-end latency (user input → response returned)
+   
+2. **Provider Call Span** (`hermes.provider.call`) — Child span for ChatClient calls
+   - Tags: `provider.name`, `provider.latency_ms`
+   - Measures: Provider-specific latency (isolated from CLI overhead)
+   
+3. **Session Persist Span** (`hermes.session.persist`) — Async background span
+   - Tags: `session.id`
+   - Note: Not included in turn latency measurement (async, background operation)
+
+### Usage
+
+Instrumentation is accessed via `Hermes.Core.Telemetry.TelemetryProvider`:
+
+```csharp
+using Hermes.Core.Telemetry;
+
+// Start a turn span
+using (var turn = TelemetryProvider.StartTurnSpan(turnId))
+{
+    TelemetryProvider.SetMessageLength(turn, message.Length);
+    
+    // Start a provider call span
+    using (var provider = TelemetryProvider.StartProviderCallSpan("Ollama"))
+    {
+        var response = await chatClient.CompleteAsync(messages);
+        TelemetryProvider.SetProviderLatency(provider, elapsedMs);
+    }
+    
+    TelemetryProvider.SetResponseLength(turn, response.Length);
+}
+```
+
+### Configuration
+
+OpenTelemetry is initialized in `Hermes.Cli/Program.cs`:
+
+```csharp
+var tracerProvider = Sdk.CreateTracerProviderBuilder()
+    .AddSource("Hermes.Core")
+    .AddConsoleExporter()  // M1: console logging for development
+    .Build();
+```
+
+For production, replace `AddConsoleExporter()` with appropriate exporters (OTLP, Jaeger, etc.).
+
+### Baseline Measurement
+
+The M1 baseline establishes a performance reference point with OTel fully enabled:
+
+- **P95 Turn Latency:** 55ms (local Ollama, console exporter active)
+- **Target:** < 100ms with OTel ON
+- **Results:** Committed to `M1-BASELINE.txt`
+
+This baseline is the reference point for M2's "no >20% OTel overhead" regression gate.
 
 ## Contributing
 

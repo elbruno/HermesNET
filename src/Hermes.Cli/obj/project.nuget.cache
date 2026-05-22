@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "f5Nxq51h568=",
+  "dgSpecHash": "z3OfpHXOa5s=",
   "success": true,
   "projectFilePath": "D:\\elbruno\\HermesNET\\src\\Hermes.Cli\\Hermes.Cli.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\brunocapuano\\.nuget\\packages\\microsoft.data.sqlite\\10.0.0\\microsoft.data.sqlite.10.0.0.nupkg.sha512",
+    "C:\\Users\\brunocapuano\\.nuget\\packages\\microsoft.data.sqlite.core\\10.0.0\\microsoft.data.sqlite.core.10.0.0.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\microsoft.entityframeworkcore\\10.0.0\\microsoft.entityframeworkcore.10.0.0.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\10.0.0\\microsoft.entityframeworkcore.abstractions.10.0.0.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\10.0.0\\microsoft.entityframeworkcore.analyzers.10.0.0.nupkg.sha512",
@@ -32,6 +34,10 @@
     "C:\\Users\\brunocapuano\\.nuget\\packages\\opentelemetry.api\\1.13.0\\opentelemetry.api.1.13.0.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\opentelemetry.api.providerbuilderextensions\\1.13.0\\opentelemetry.api.providerbuilderextensions.1.13.0.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\opentelemetry.exporter.console\\1.13.0\\opentelemetry.exporter.console.1.13.0.nupkg.sha512",
+    "C:\\Users\\brunocapuano\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.11\\sqlitepclraw.bundle_e_sqlite3.2.1.11.nupkg.sha512",
+    "C:\\Users\\brunocapuano\\.nuget\\packages\\sqlitepclraw.core\\2.1.11\\sqlitepclraw.core.2.1.11.nupkg.sha512",
+    "C:\\Users\\brunocapuano\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.11\\sqlitepclraw.lib.e_sqlite3.2.1.11.nupkg.sha512",
+    "C:\\Users\\brunocapuano\\.nuget\\packages\\sqlitepclraw.provider.e_sqlite3\\2.1.11\\sqlitepclraw.provider.e_sqlite3.2.1.11.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\system.commandline\\2.0.0\\system.commandline.2.0.0.nupkg.sha512",
     "C:\\Users\\brunocapuano\\.nuget\\packages\\system.numerics.tensors\\10.0.8\\system.numerics.tensors.10.0.8.nupkg.sha512"
   ],

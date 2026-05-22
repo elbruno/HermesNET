@@ -105,9 +105,8 @@ public class BaselineLatencyTests
         Assert.True(p95Latency <= MaxLatencyMs,
             $"P95 turn latency {p95Latency}ms exceeds target {MaxLatencyMs}ms");
 
-        // Flush and dispose
-        await tracerProvider.ForceFlushAsync();
-        tracerProvider.Dispose();
+        // Dispose tracer provider
+        tracerProvider?.Dispose();
     }
 
     private async Task SimulateOllamaCall()

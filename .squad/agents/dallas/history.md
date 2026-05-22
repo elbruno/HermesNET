@@ -86,6 +86,47 @@ Ready for Ripley's R1 gate review on 2026-05-27.
 
 ---
 
+## M1 T6 + T7 Complete — SQLite Session Store & CLI Integration
+
+**Date:** 2026-05-22
+
+### T6 — SQLite Session Store (DONE)
+
+- `ISessionStore` interface: `CreateAsync`, `GetAsync`, `UpdateAsync`, `DeleteAsync`, `ListRecentAsync` — all 5 methods implemented.
+- `SessionStore` implementation using `Microsoft.Data.Sqlite` (ADO.NET, no EF Core overhead).
+  - Accepts any connection string including `:memory:` for unit tests.
+  - `InitializeAsync()` runs `CREATE TABLE IF NOT EXISTS` + indexes — idempotent on fresh and existing DBs.
+  - `ListRecentAsync` orders by `CreatedAt DESC`, respects `limit` parameter.
+- `SessionEntity` data model matching schema spec.
+- `001_InitialSchema.sql` SQL migration stored at `src/Hermes.Core/Data/Migrations/`.
+- `Microsoft.Data.Sqlite 10.0.0` added to `Directory.Packages.props`, `Hermes.Core.csproj`, `Hermes.Core.Tests.csproj`.
+
+**Tests — 23 total, all passing:**
+- Happy-path CRUD round-trip: CreateAsync → GetAsync → UpdateAsync → DeleteAsync
+- Edge cases: duplicate ID (handled by SQLite), missing ID (KeyNotFoundException with ID in message), operations before InitializeAsync (InvalidOperationException)
+- ListRecentAsync: empty result, most-recent-first ordering, limit respected, default-50 cap
+- InitializeAsync idempotency (second call is no-op)
+
+### T7 — CLI Chat Entry Point (DONE)
+
+- `ChatCommand.cs` wired with System.CommandLine 2.0.0 (redesigned API):
+  - `AsynchronousCommandLineAction` subclass pattern (2.0.0 removed `SetHandler` extension)
+  - `--profile / -p` and `--message / -m` options, both required
+  - Handler: CreateAsync session → ChatAsync → UpdateAsync → print response to stdout + session-id to stderr
+- `Program.cs` updated:
+  - DI registers `ISessionStore` (singleton `SessionStore`) + calls `InitializeAsync()` at startup
+  - `root.Parse(args, new ParserConfiguration()).InvokeAsync()` for System.CommandLine 2.0.0
+  - `Database:ConnectionString` config key (falls back to `Data Source=hermes.db`)
+- `appsettings.json` extended with `Database:ConnectionString` key.
+
+**Build:** Zero warnings, TreatWarningsAsErrors=true passes.  
+**Tests:** 23/23 pass, coverage ≥80% branch on SessionStore.
+
+**Unblocks:** T8 (load test / R5-A) and T9 (YAML parser / R5-B) can now start.
+
+
+---
+
 ## Week 2 Kickoff — R1 Verdict GREEN ✅
 **2026-05-22 — Team Update from Scribe**
 
@@ -98,3 +139,33 @@ Ready for Ripley's R1 gate review on 2026-05-27.
 - Test extensibility confirmed for T6 and future tool invocation.
 
 **Next:** Await Ripley's M1 detailed task breakdown (week-by-week) for team kickoff. R5 risk spike begins this week.
+
+---
+
+## M1 T8 + T9 Complete — R5 Validation GREEN ✅
+
+**Date:** 2026-05-22
+
+### T8 — SQLite Session Store Load Test (R5-A PASS)
+
+- `tests/Hermes.LoadTests/SessionLoadTest.cs` — Stopwatch harness with microsecond precision (`ElapsedTicks / Frequency`)
+- 1,000 sequential `CreateAsync` inserts + 100 `ListRecentAsync(limit:50)` queries on full 1K-row table
+- **P95 insert = 12µs (1ms) ≤ 50ms budget ✅**
+- **P95 query = 87µs (1ms) ≤ 20ms budget ✅**
+- Results documented in `docs/benchmarks/m1-session-load.md`
+- `Hermes.LoadTests` project added to `HermesNET.slnx`
+
+### T9 — YAML Skill Parser (R5-B PASS)
+
+- `src/Hermes.Core/Skills/SkillParser.cs` — flat key-value YAML parser (no external deps; M1 scope only)
+- `src/Hermes.Core/Skills/SkillDescriptor.cs` — immutable parsed output
+- `src/Hermes.Core/Skills/SkillParseException.cs` — typed exception for all validation failures
+- Validation order: empty → unknown keys → name → null description → missing description → type presence → type value
+- **Unknown-key policy: THROW** (documented; fail-fast prevents corrupt state in M2+)
+- Valid types: `action`, `tool`, `skill`, `chat`
+- `tests/Hermes.Core.Tests/Skills/SkillParserTests.cs` — 6 tests (5 malformed + 1 valid), all pass ✅
+- Fixture YAML files in `tests/Hermes.Core.Tests/Skills/fixtures/`
+
+**Build:** Zero warnings, TreatWarningsAsErrors=true.  
+**Tests:** 48/48 pass (1 load + 46 core + 1 benchmark).  
+**R5 CHECKPOINT: GREEN** — both gates passed. Ready for Ripley's T12 Go/No-Go review.

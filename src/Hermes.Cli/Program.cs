@@ -1,7 +1,10 @@
+using System.CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hermes.Host;
 using Hermes.Core.Services;
+using Hermes.Core.Session;
+using Hermes.Cli.Commands;
 
 var builder = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
@@ -9,36 +12,29 @@ var builder = new ConfigurationBuilder()
 
 var configuration = builder.Build();
 
+var connectionString = configuration["Database:ConnectionString"] ?? "Data Source=hermes.db";
+
 var services = new ServiceCollection();
-services.AddSingleton(configuration);
-services.AddSingleton(sp => new ChatClientFactory(sp.GetRequiredService<IConfiguration>()).CreateClient());
+services.AddSingleton<IConfiguration>(configuration);
+services.AddSingleton(sp =>
+    new ChatClientFactory(sp.GetRequiredService<IConfiguration>()).CreateClient());
 services.AddScoped<IHermesChatService, HermesChatService>();
+services.AddSingleton<ISessionStore>(_ => new SessionStore(connectionString));
 
 var serviceProvider = services.BuildServiceProvider();
 
-if (args.Length == 0)
-{
-    Console.WriteLine("Usage: hermes chat <message>");
-    Console.WriteLine("Example: hermes chat \"What is 2+2?\"");
-    return 1;
-}
+// Initialize session store (idempotent — safe on every startup)
+var sessionStore = serviceProvider.GetRequiredService<ISessionStore>();
+await sessionStore.InitializeAsync();
 
-if (args[0] == "chat" && args.Length > 1)
-{
-    var message = string.Join(" ", args.Skip(1));
-    var chatService = serviceProvider.GetRequiredService<IHermesChatService>();
-    try
-    {
-        var response = await chatService.ChatAsync(message);
-        Console.WriteLine(response);
-        return 0;
-    }
-    catch (Exception ex)
-    {
-        Console.Error.WriteLine($"Error: {ex.Message}");
-        return 1;
-    }
-}
+// Build CLI root command
+var root = new RootCommand("Hermes — local AI runtime CLI");
+root.Add(
+    ChatCommand.Build(
+        serviceProvider.GetRequiredService<IHermesChatService>(),
+        sessionStore));
 
-Console.WriteLine("Unknown command");
-return 1;
+var parseResult = root.Parse(args, new ParserConfiguration());
+return await parseResult.InvokeAsync();
+
+

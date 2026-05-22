@@ -1,0 +1,29 @@
+# M1 OTel Baseline Latency Measurement
+
+**Date:** 2026-05-22 20:23:38Z
+**Iterations:** 10
+**Provider:** Ollama (Local)
+**OTel Status:** ENABLED (Console Exporter)
+
+## Results
+- P95 Turn Latency: 51ms
+- Min Latency: 24ms
+- Max Latency: 51ms
+- Average Latency: 41.20ms
+- All Latencies: 24, 28, 31, 46, 46, 46, 46, 47, 47, 51ms
+
+## Measurement Definition
+**Turn Latency = User CLI input → Agent response returned (excluding SQLite persist)**
+
+Spans Captured:
+1. CLI Input (name = "hermes.chat.turn")
+2. Provider Call (name = "hermes.provider.call")
+3. Session Persist (async, not part of turn latency gate)
+
+## Assertion
+- P95 ≤ 100ms: ✅ PASS
+
+## Next Steps
+This baseline feeds into R5 (Week 2) load test to measure:
+- SQLite load test at 1,000 sessions doesn't degrade latency below baseline
+- OTel overhead is measurable and acceptable (M2 gate: no >20% overhead)

@@ -59,6 +59,11 @@
           "framework": "net10.0",
           "targetAlias": "net10.0",
           "dependencies": {
+            "Microsoft.Data.Sqlite": {
+              "target": "Package",
+              "version": "[10.0.0, )",
+              "versionCentrallyManaged": true
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[10.0.0, )",
@@ -92,6 +97,8 @@
           },
           "centralPackageVersions": {
             "Coverlet.Collector": "6.0.0",
+            "FluentAssertions": "6.12.0",
+            "Microsoft.Data.Sqlite": "10.0.0",
             "Microsoft.EntityFrameworkCore": "10.0.0",
             "Microsoft.Extensions.AI": "10.6.0",
             "Microsoft.Extensions.AI.Abstractions": "10.6.0",
@@ -99,6 +106,7 @@
             "Microsoft.Extensions.Configuration.Json": "10.0.0",
             "Microsoft.Extensions.DependencyInjection": "10.0.0",
             "Microsoft.NET.Test.Sdk": "17.11.1",
+            "Moq": "4.20.70",
             "OpenTelemetry": "1.13.0",
             "OpenTelemetry.Exporter.Console": "1.13.0",
             "System.CommandLine": "2.0.0",
@@ -486,6 +494,8 @@
           },
           "centralPackageVersions": {
             "Coverlet.Collector": "6.0.0",
+            "FluentAssertions": "6.12.0",
+            "Microsoft.Data.Sqlite": "10.0.0",
             "Microsoft.EntityFrameworkCore": "10.0.0",
             "Microsoft.Extensions.AI": "10.6.0",
             "Microsoft.Extensions.AI.Abstractions": "10.6.0",
@@ -493,6 +503,7 @@
             "Microsoft.Extensions.Configuration.Json": "10.0.0",
             "Microsoft.Extensions.DependencyInjection": "10.0.0",
             "Microsoft.NET.Test.Sdk": "17.11.1",
+            "Moq": "4.20.70",
             "OpenTelemetry": "1.13.0",
             "OpenTelemetry.Exporter.Console": "1.13.0",
             "System.CommandLine": "2.0.0",

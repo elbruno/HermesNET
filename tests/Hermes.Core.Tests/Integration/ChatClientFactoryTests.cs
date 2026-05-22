@@ -22,7 +22,7 @@ public class ChatClientFactoryTests
     public void CreateClient_WithOllamaProvider_ReturnsOllamaClient()
     {
         // Arrange
-        var inMemorySettings = new Dictionary<string, string>
+        var inMemorySettings = new Dictionary<string, string?>
         {
             { "Provider", "Ollama" },
             { "Ollama:BaseUrl", "http://localhost:11434" },
@@ -46,7 +46,7 @@ public class ChatClientFactoryTests
     public void CreateClient_WithOpenAIProvider_ReturnsOpenAIClient()
     {
         // Arrange
-        var inMemorySettings = new Dictionary<string, string>
+        var inMemorySettings = new Dictionary<string, string?>
         {
             { "Provider", "OpenAI" },
             { "OpenAI:ApiKey", "test-key" },
@@ -70,7 +70,7 @@ public class ChatClientFactoryTests
     public void CreateClient_WithUnknownProvider_ThrowsInvalidOperationException()
     {
         // Arrange
-        var inMemorySettings = new Dictionary<string, string>
+        var inMemorySettings = new Dictionary<string, string?>
         {
             { "Provider", "UnknownProvider" }
         };
@@ -90,7 +90,7 @@ public class ChatClientFactoryTests
     public void CreateClient_WithDefaultProvider_UsesOllama()
     {
         // Arrange
-        var inMemorySettings = new Dictionary<string, string>();
+        var inMemorySettings = new Dictionary<string, string?>();
 
         var config = new ConfigurationBuilder()
             .AddInMemoryCollection(inMemorySettings)
@@ -109,7 +109,7 @@ public class ChatClientFactoryTests
     public void HermesChatService_WithChatClient_CanBeInstantiated()
     {
         // Arrange
-        var inMemorySettings = new Dictionary<string, string>
+        var inMemorySettings = new Dictionary<string, string?>
         {
             { "Provider", "Ollama" },
             { "Ollama:BaseUrl", "http://localhost:11434" },
