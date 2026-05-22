@@ -1,0 +1,3 @@
+name: test-skill
+type: invalid_type
+description: this type value is not in the allowed set

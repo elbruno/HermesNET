@@ -1,0 +1,4 @@
+name: test-skill
+type: action
+description: does something
+unknown_key: this field is not in the schema

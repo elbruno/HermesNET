@@ -7,5 +7,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/Hermes.Core.Tests/Hermes.Core.Tests.csproj" />
     <Project Path="tests/Hermes.Benchmarks/Hermes.Benchmarks.csproj" />
+    <Project Path="tests/Hermes.LoadTests/Hermes.LoadTests.csproj" />
   </Folder>
 </Solution>

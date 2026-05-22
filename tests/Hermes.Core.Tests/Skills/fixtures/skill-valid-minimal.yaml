@@ -1,0 +1,3 @@
+name: echo-test
+type: action
+description: A minimal valid skill for testing
