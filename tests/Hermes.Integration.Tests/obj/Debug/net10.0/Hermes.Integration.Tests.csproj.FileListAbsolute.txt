@@ -166,3 +166,4 @@ D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\refint\Her
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.pdb
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.genruntimeconfig.cache
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\ref\Hermes.Integration.Tests.dll
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.sourcelink.json

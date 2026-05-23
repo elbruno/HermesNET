@@ -17,10 +17,11 @@ namespace Hermes.Benchmarks;
 /// T10 — Performance baseline harness for ChatAsync latency.
 /// Measures P50/P95/P99 turn latency (user input → response) with OTel ON.
 /// Requires local Ollama at http://localhost:11434.
-/// Run with: dotnet test --filter "Category=RequiresOllama"
+/// Run with: HERMES_RUN_PERF_BENCHMARKS=1 dotnet test --filter "Category=RequiresOllama"
 /// </summary>
 public class ChatLoopBenchmark
 {
+    private const string RunBenchmarksEnvVar = "HERMES_RUN_PERF_BENCHMARKS";
     private const string OllamaBaseUrl = "http://localhost:11434";
     private const int WarmUpRuns = 5;
     private const int MeasuredRuns = 45;
@@ -42,6 +43,13 @@ public class ChatLoopBenchmark
     [Trait("Category", "RequiresOllama")]
     public async Task MeasureLatency_50Runs_P95Within100ms()
     {
+        if (!ShouldRunBenchmarks())
+        {
+            _output.WriteLine(
+                $"⚠️  Performance benchmark is opt-in. Set {RunBenchmarksEnvVar}=1 to run this test.");
+            return; // Do not fail regular test runs on machine-dependent latency benchmarks
+        }
+
         if (!await IsOllamaReachableAsync())
         {
             _output.WriteLine("⚠️  Ollama not reachable at " + OllamaBaseUrl + " — skipping benchmark.");
@@ -129,6 +137,13 @@ public class ChatLoopBenchmark
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
+
+    private static bool ShouldRunBenchmarks()
+    {
+        var value = Environment.GetEnvironmentVariable(RunBenchmarksEnvVar);
+        return string.Equals(value, "1", StringComparison.Ordinal) ||
+               string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+    }
 
     private static IHermesChatService BuildChatService()
     {

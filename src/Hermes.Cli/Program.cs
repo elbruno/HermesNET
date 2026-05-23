@@ -2,8 +2,11 @@ using System.CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Hermes.Host;
+using Hermes.Core.Memory;
 using Hermes.Core.Services;
 using Hermes.Core.Session;
+using Hermes.Core.Profiles;
+using Hermes.Core.Skills;
 using Hermes.Cli.Commands;
 
 var builder = new ConfigurationBuilder()
@@ -20,12 +23,32 @@ services.AddSingleton(sp =>
     new ChatClientFactory(sp.GetRequiredService<IConfiguration>()).CreateClient());
 services.AddScoped<IHermesChatService, HermesChatService>();
 services.AddSingleton<ISessionStore>(_ => new SessionStore(connectionString));
+services.AddSingleton<IProfileService>(_ => new ProfileService(connectionString));
+services.AddSingleton<ISessionService>(sp =>
+    new SessionService(connectionString, sp.GetRequiredService<IProfileService>()));
+services.AddSingleton<ISkillRegistry, SkillRegistry>();
+services.AddSingleton<MemoryStore>(_ => new MemoryStore(connectionString));
+services.AddSingleton<IMemoryService>(sp => sp.GetRequiredService<MemoryStore>());
+services.AddSingleton<CuratedMemoryLoader>(sp =>
+    new CuratedMemoryLoader(sp.GetRequiredService<IMemoryService>(), sp.GetRequiredService<IProfileService>()));
+services.AddSingleton<MemoryUpdateHandler>(sp =>
+    new MemoryUpdateHandler(sp.GetRequiredService<IMemoryService>(), sp.GetRequiredService<IProfileService>(), sp.GetRequiredService<CuratedMemoryLoader>()));
+
 
 var serviceProvider = services.BuildServiceProvider();
 
-// Initialize session store (idempotent — safe on every startup)
+// Initialize all stores (idempotent — safe on every startup)
 var sessionStore = serviceProvider.GetRequiredService<ISessionStore>();
 await sessionStore.InitializeAsync();
+
+var profileService = serviceProvider.GetRequiredService<IProfileService>();
+await profileService.InitializeAsync();
+
+var sessionService = serviceProvider.GetRequiredService<ISessionService>();
+await sessionService.InitializeAsync();
+
+var memoryStore = serviceProvider.GetRequiredService<MemoryStore>();
+await memoryStore.InitializeAsync();
 
 // Build CLI root command
 var root = new RootCommand("Hermes — local AI runtime CLI");
@@ -33,6 +56,13 @@ root.Add(
     ChatCommand.Build(
         serviceProvider.GetRequiredService<IHermesChatService>(),
         sessionStore));
+root.Add(ProfileCommand.Build(profileService));
+root.Add(SessionCommand.Build(profileService, sessionService));
+root.Add(MemoryCommand.Build(
+    serviceProvider.GetRequiredService<CuratedMemoryLoader>(),
+    serviceProvider.GetRequiredService<MemoryUpdateHandler>(),
+    profileService));
+root.Add(SkillsCommand.Build(serviceProvider.GetRequiredService<ISkillRegistry>()));
 
 var parseResult = root.Parse(args, new ParserConfiguration());
 return await parseResult.InvokeAsync();

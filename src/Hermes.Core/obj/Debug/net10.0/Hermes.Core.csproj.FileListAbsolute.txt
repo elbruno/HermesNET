@@ -6,6 +6,7 @@ D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.GeneratedMSBu
 D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.AssemblyInfoInputs.cache
 D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.AssemblyInfo.cs
 D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.csproj.CoreCompileInputs.cache
+D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.sourcelink.json
 D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.dll
 D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\refint\Hermes.Core.dll
 D:\elbruno\HermesNET\src\Hermes.Core\obj\Debug\net10.0\Hermes.Core.pdb

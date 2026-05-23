@@ -88,3 +88,4 @@ D:\elbruno\HermesNET\src\Hermes.Cli\bin\Debug\net10.0\runtimes\win-arm\native\e_
 D:\elbruno\HermesNET\src\Hermes.Cli\bin\Debug\net10.0\runtimes\win-arm64\native\e_sqlite3.dll
 D:\elbruno\HermesNET\src\Hermes.Cli\bin\Debug\net10.0\runtimes\win-x64\native\e_sqlite3.dll
 D:\elbruno\HermesNET\src\Hermes.Cli\bin\Debug\net10.0\runtimes\win-x86\native\e_sqlite3.dll
+D:\elbruno\HermesNET\src\Hermes.Cli\obj\Debug\net10.0\Hermes.Cli.sourcelink.json
