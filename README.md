@@ -149,7 +149,21 @@ dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
 
 ## Documentation
 
-- **Milestone 1 Plan** — See `docs/research/plan.md`
+### Release Information
+- **[Release Notes v2.0.0](./docs/release-notes-m2.md)** — Production release, features, quality metrics
+- **[Migration Guide (M1→M2)](./docs/migration-m1-m2.md)** — Upgrade path for M1 users (or start here if new)
+
+### Getting Started
+- **[Quick Start Guide](./docs/quickstart.md)** — 5-minute setup
+- **[User Guide](./docs/user-guide.md)** — Core concepts (profiles, sessions, memory)
+- **[CLI Reference](./docs/cli-reference.md)** — Complete command reference
+
+### Development
+- **[Skill Authoring](./docs/skill-authoring.md)** — Write custom skills
+- **[API Reference](./docs/api-reference.md)** — REST API endpoints
+- **[Troubleshooting](./docs/troubleshooting.md)** — Common issues and solutions
+
+### Architecture & Quality
 - **Architecture Decisions** — See `.squad/decisions.md`
 - **Testing & Quality Gates** — See `docs/testing/`
   - [Test Framework Specification](./docs/testing/TEST-FRAMEWORK.md)
