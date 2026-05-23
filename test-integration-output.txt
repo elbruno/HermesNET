@@ -1,0 +1,8 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hermes.Core -> D:\elbruno\HermesNET\src\Hermes.Core\bin\Debug\net10.0\Hermes.Core.dll
+  Hermes.Host -> D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Host.dll
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\RestApiContractTests.cs(4,32): error CS0234: The type or namespace name 'Testing' does not exist in the namespace 'Microsoft.AspNetCore.Mvc' (are you missing an assembly reference?) [D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\Hermes.Integration.Tests.csproj]
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\Usings.cs(10,39): error CS0234: The type or namespace name 'Testing' does not exist in the namespace 'Microsoft.AspNetCore.Mvc' (are you missing an assembly reference?) [D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\Hermes.Integration.Tests.csproj]
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\E2ESmokeTest.cs(21,13): error CS0246: The type or namespace name 'SessionStore' could not be found (are you missing a using directive or an assembly reference?) [D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\Hermes.Integration.Tests.csproj]
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\RestApiContractTests.cs(42,13): error CS0246: The type or namespace name 'WebApplicationFactory<>' could not be found (are you missing a using directive or an assembly reference?) [D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\Hermes.Integration.Tests.csproj]

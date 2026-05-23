@@ -1,4 +1,6 @@
 using Hermes.Core.Profiles;
+using Hermes.Core.Telemetry;
+using System.Diagnostics;
 
 namespace Hermes.Core.Memory;
 
@@ -39,6 +41,10 @@ public sealed class CuratedMemoryLoader
     /// </exception>
     public async Task<MemoryContext> LoadMemoryAsync(string profileId, CancellationToken ct = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("CuratedMemoryLoader.LoadMemoryAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "load");
+        
         ValidateProfileId(profileId);
         await ValidateProfileExistsAsync(profileId, ct);
 
@@ -46,7 +52,12 @@ public sealed class CuratedMemoryLoader
         try
         {
             if (_memoryCache.TryGetValue(profileId, out var cached))
+            {
+                span?.SetTag("cache.hit", true);
                 return cached;
+            }
+            
+            span?.SetTag("cache.hit", false);
 
             var memory = await _memoryService.LoadMemoryAsync(profileId, ct);
             _memoryCache[profileId] = memory;
@@ -70,13 +81,22 @@ public sealed class CuratedMemoryLoader
     /// </exception>
     public async Task<UserProfileData> LoadUserProfileAsync(string profileId, CancellationToken ct = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("CuratedMemoryLoader.LoadUserProfileAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "load");
+        
         ValidateProfileId(profileId);
 
         await _cacheLock.WaitAsync(ct);
         try
         {
             if (_userCache.TryGetValue(profileId, out var cached))
+            {
+                span?.SetTag("cache.hit", true);
                 return cached;
+            }
+            
+            span?.SetTag("cache.hit", false);
 
             var profile = await _memoryService.LoadUserProfileAsync(profileId, ct);
             if (profile.IsEmpty)

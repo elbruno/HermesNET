@@ -10,7 +10,6 @@
         "dependencies": {
           "FluentAssertions": "6.12.0",
           "Hermes.Core": "1.0.0",
-          "Hermes.Host": "1.0.0",
           "Microsoft.Data.Sqlite": "10.0.0",
           "Microsoft.Extensions.Configuration": "10.0.0",
           "Microsoft.Extensions.DependencyInjection": "10.0.0",
@@ -929,22 +928,6 @@
             "fileVersion": "1.0.0.0"
           }
         }
-      },
-      "Hermes.Host/1.0.0": {
-        "dependencies": {
-          "Hermes.Core": "1.0.0",
-          "Microsoft.Extensions.AI": "10.6.0",
-          "Microsoft.Extensions.Configuration": "10.0.0",
-          "Microsoft.Extensions.Configuration.Json": "10.0.0",
-          "Microsoft.Extensions.DependencyInjection": "10.0.0",
-          "OpenTelemetry": "1.13.0"
-        },
-        "runtime": {
-          "Hermes.Host.dll": {
-            "assemblyVersion": "1.0.0.0",
-            "fileVersion": "1.0.0.0"
-          }
-        }
       }
     }
   },
@@ -1312,11 +1295,6 @@
       "hashPath": "xunit.extensibility.execution.2.6.0.nupkg.sha512"
     },
     "Hermes.Core/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Hermes.Host/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

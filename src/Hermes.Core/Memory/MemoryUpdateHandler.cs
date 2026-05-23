@@ -1,4 +1,6 @@
 using Hermes.Core.Profiles;
+using Hermes.Core.Telemetry;
+using System.Diagnostics;
 
 namespace Hermes.Core.Memory;
 
@@ -45,6 +47,11 @@ public sealed class MemoryUpdateHandler
     /// <exception cref="MemoryParseException">content contains invalid characters or binary data.</exception>
     public async Task UpdateMemoryAsync(string profileId, string content, CancellationToken ct = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("MemoryUpdateHandler.UpdateMemoryAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "update");
+        span?.SetTag("memory.size", content.Length);
+        
         ValidateProfileId(profileId);
         await ValidateProfileExistsAsync(profileId, ct);
         ValidateContent(content, nameof(content));
@@ -69,6 +76,11 @@ public sealed class MemoryUpdateHandler
     /// <exception cref="MemoryParseException">data contains invalid characters.</exception>
     public async Task UpdateUserProfileAsync(string profileId, string data, CancellationToken ct = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("MemoryUpdateHandler.UpdateUserProfileAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "update");
+        span?.SetTag("memory.size", data.Length);
+        
         ValidateProfileId(profileId);
         await ValidateProfileExistsAsync(profileId, ct);
         ValidateContent(data, nameof(data));

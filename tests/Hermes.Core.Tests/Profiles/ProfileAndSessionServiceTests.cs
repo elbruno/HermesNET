@@ -307,7 +307,7 @@ public sealed class ProfileAndSessionServiceTests : IAsyncLifetime
 
         // Attempting to switch to a session that belongs to p2 while p1 is current must throw.
         var act = () => _sessionService.SwitchSessionAsync(sessionP2.Id);
-        await act.Should().ThrowAsync<InvalidOperationException>();
+        await act.Should().ThrowAsync<UnauthorizedAccessException>();
     }
 
     [Fact]

@@ -1238,24 +1238,6 @@
         "runtime": {
           "bin/placeholder/Hermes.Core.dll": {}
         }
-      },
-      "Hermes.Host/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v10.0",
-        "dependencies": {
-          "Hermes.Core": "1.0.0",
-          "Microsoft.Extensions.AI": "10.6.0",
-          "Microsoft.Extensions.Configuration": "10.0.0",
-          "Microsoft.Extensions.Configuration.Json": "10.0.0",
-          "Microsoft.Extensions.DependencyInjection": "10.0.0",
-          "OpenTelemetry": "1.13.0"
-        },
-        "compile": {
-          "bin/placeholder/Hermes.Host.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Hermes.Host.dll": {}
-        }
       }
     }
   },
@@ -2903,11 +2885,6 @@
       "type": "project",
       "path": "../../src/Hermes.Core/Hermes.Core.csproj",
       "msbuildProject": "../../src/Hermes.Core/Hermes.Core.csproj"
-    },
-    "Hermes.Host/1.0.0": {
-      "type": "project",
-      "path": "../../src/Hermes.Host/Hermes.Host.csproj",
-      "msbuildProject": "../../src/Hermes.Host/Hermes.Host.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -2915,7 +2892,6 @@
       "Coverlet.Collector >= 6.0.0",
       "FluentAssertions >= 6.12.0",
       "Hermes.Core >= 1.0.0",
-      "Hermes.Host >= 1.0.0",
       "Microsoft.Data.Sqlite >= 10.0.0",
       "Microsoft.Extensions.Configuration >= 10.0.0",
       "Microsoft.Extensions.DependencyInjection >= 10.0.0",
@@ -2963,9 +2939,6 @@
           "projectReferences": {
             "D:\\elbruno\\HermesNET\\src\\Hermes.Core\\Hermes.Core.csproj": {
               "projectPath": "D:\\elbruno\\HermesNET\\src\\Hermes.Core\\Hermes.Core.csproj"
-            },
-            "D:\\elbruno\\HermesNET\\src\\Hermes.Host\\Hermes.Host.csproj": {
-              "projectPath": "D:\\elbruno\\HermesNET\\src\\Hermes.Host\\Hermes.Host.csproj"
             }
           }
         }
@@ -3046,6 +3019,7 @@
         "centralPackageVersions": {
           "Coverlet.Collector": "6.0.0",
           "FluentAssertions": "6.12.0",
+          "Microsoft.AspNetCore.Mvc.Testing": "10.0.0",
           "Microsoft.Data.Sqlite": "10.0.0",
           "Microsoft.EntityFrameworkCore": "10.0.0",
           "Microsoft.Extensions.AI": "10.6.0",
@@ -3057,6 +3031,9 @@
           "Moq": "4.20.70",
           "OpenTelemetry": "1.13.0",
           "OpenTelemetry.Exporter.Console": "1.13.0",
+          "OpenTelemetry.Extensions.Hosting": "1.13.0",
+          "OpenTelemetry.Instrumentation.AspNetCore": "1.12.0",
+          "Swashbuckle.AspNetCore": "7.3.1",
           "System.CommandLine": "2.0.0",
           "xunit": "2.6.0",
           "xunit.runner.visualstudio": "2.5.4"

@@ -1,5 +1,7 @@
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Text;
+using Hermes.Core.Telemetry;
 
 namespace Hermes.Core.Skills;
 
@@ -37,7 +39,10 @@ public sealed class SkillRegistry : ISkillRegistry
     /// <inheritdoc/>
     public Task RegisterSkillAsync(SkillDescriptor skillDefinition)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.RegisterSkillAsync");
         var skillId = skillDefinition.Id ?? skillDefinition.Name;
+        span?.SetTag("skill.id", skillId);
+        span?.SetTag("operation", "register");
 
         if (_skills.ContainsKey(skillId))
             throw new DuplicateSkillException(skillId);
@@ -58,6 +63,10 @@ public sealed class SkillRegistry : ISkillRegistry
     /// <inheritdoc/>
     public Task<SkillDescriptor> GetSkillAsync(string skillId)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.GetSkillAsync");
+        span?.SetTag("skill.id", skillId);
+        span?.SetTag("operation", "read");
+        
         if (_skills.TryGetValue(skillId, out var skill))
             return Task.FromResult(skill);
 
@@ -66,22 +75,38 @@ public sealed class SkillRegistry : ISkillRegistry
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<SkillDescriptor>> ListSkillsAsync()
-        => Task.FromResult<IReadOnlyList<SkillDescriptor>>([.. _skills.Values]);
+    {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.ListSkillsAsync");
+        span?.SetTag("operation", "list");
+        span?.SetTag("skill.count", _skills.Count);
+        
+        return Task.FromResult<IReadOnlyList<SkillDescriptor>>([.. _skills.Values]);
+    }
 
     /// <inheritdoc/>
     public Task<SkillDescriptor?> FindByNameAsync(string name)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.FindByNameAsync");
+        span?.SetTag("operation", "find");
+        
         var found = _skills.Values.FirstOrDefault(s =>
             string.Equals(s.Id,          name, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(s.Name,        name, StringComparison.OrdinalIgnoreCase) ||
             string.Equals(s.Description, name, StringComparison.OrdinalIgnoreCase));
 
+        if (found is not null)
+            span?.SetTag("skill.id", found.Id ?? found.Name);
+        
         return Task.FromResult<SkillDescriptor?>(found);
     }
 
     /// <inheritdoc/>
     public Task<SkillValidationResult> ValidateAsync(string skillId)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.ValidateAsync");
+        span?.SetTag("skill.id", skillId);
+        span?.SetTag("operation", "validate");
+        
         if (!_skills.TryGetValue(skillId, out var skill))
             return Task.FromResult(
                 new SkillValidationResult([$"Skill '{skillId}' not found in registry."], []));
@@ -100,6 +125,8 @@ public sealed class SkillRegistry : ISkillRegistry
                 $"Expected major version {SupportedSchemaMajor}.");
         }
 
+        span?.SetTag("validation.passed", errors.Count == 0);
+        
         return errors.Count == 0 && warnings.Count == 0
             ? Task.FromResult(SkillValidationResult.Success)
             : Task.FromResult(new SkillValidationResult(errors, warnings));
@@ -108,6 +135,10 @@ public sealed class SkillRegistry : ISkillRegistry
     /// <inheritdoc/>
     public Task<IReadOnlyDictionary<string, string>> GetSkillMetadataAsync(string skillId)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.GetSkillMetadataAsync");
+        span?.SetTag("skill.id", skillId);
+        span?.SetTag("operation", "read");
+        
         if (!_skills.TryGetValue(skillId, out var skill))
             throw new KeyNotFoundException($"Skill '{skillId}' not found in registry.");
 
@@ -120,6 +151,10 @@ public sealed class SkillRegistry : ISkillRegistry
     /// <inheritdoc/>
     public async Task LoadFromDirectoryAsync(string skillsDirectory)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.LoadFromDirectoryAsync");
+        span?.SetTag("operation", "load");
+        span?.SetTag("directory", skillsDirectory);
+        
         if (!Directory.Exists(skillsDirectory))
             throw new DirectoryNotFoundException(
                 $"Skills directory not found: {skillsDirectory}");
@@ -128,12 +163,17 @@ public sealed class SkillRegistry : ISkillRegistry
         try
         {
             var files = Directory.GetFiles(skillsDirectory, "*.md", SearchOption.TopDirectoryOnly);
+            var loadedCount = 0;
+            var skippedCount = 0;
 
             foreach (var filePath in files)
             {
                 // Idempotency: skip files that were already loaded.
                 if (_loadedFiles.Contains(filePath))
+                {
+                    skippedCount++;
                     continue;
+                }
 
                 var content    = await File.ReadAllTextAsync(filePath, Encoding.UTF8)
                                            .ConfigureAwait(false);
@@ -155,7 +195,11 @@ public sealed class SkillRegistry : ISkillRegistry
 
                 _skills[skillId] = descriptor;
                 _loadedFiles.Add(filePath);
+                loadedCount++;
             }
+            
+            span?.SetTag("skill.loaded", loadedCount);
+            span?.SetTag("skill.skipped", skippedCount);
         }
         finally
         {

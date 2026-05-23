@@ -1,0 +1,70 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Hermes.Core -> D:\elbruno\HermesNET\src\Hermes.Core\bin\Debug\net10.0\Hermes.Core.dll
+  Hermes.LoadTests -> D:\elbruno\HermesNET\tests\Hermes.LoadTests\bin\Debug\net10.0\Hermes.LoadTests.dll
+Test run for D:\elbruno\HermesNET\tests\Hermes.LoadTests\bin\Debug\net10.0\Hermes.LoadTests.dll (.NETCoreApp,Version=v10.0)
+  Hermes.Core.Tests -> D:\elbruno\HermesNET\tests\Hermes.Core.Tests\bin\Debug\net10.0\Hermes.Core.Tests.dll
+Test run for D:\elbruno\HermesNET\tests\Hermes.Core.Tests\bin\Debug\net10.0\Hermes.Core.Tests.dll (.NETCoreApp,Version=v10.0)
+  Hermes.Host -> D:\elbruno\HermesNET\src\Hermes.Host\bin\Debug\net10.0\Hermes.Host.dll
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+  Hermes.Integration.Tests -> D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Integration.Tests.dll
+  Hermes.Benchmarks -> D:\elbruno\HermesNET\tests\Hermes.Benchmarks\bin\Debug\net10.0\Hermes.Benchmarks.dll
+Test run for D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Integration.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for D:\elbruno\HermesNET\tests\Hermes.Benchmarks\bin\Debug\net10.0\Hermes.Benchmarks.dll (.NETCoreApp,Version=v10.0)
+
+A total of 1 test files matched the specified pattern.
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 54 ms - Hermes.LoadTests.dll (net10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.20]     Hermes.Core.Tests.Profiles.ProfileIsolationTests.SwitchingProfile_DoesNotAffectOtherProfilesCurrentSession [SKIP]
+  Skipped Hermes.Core.Tests.Profiles.ProfileIsolationTests.SwitchingProfile_DoesNotAffectOtherProfilesCurrentSession [1 ms]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.DeleteSession_MissingId_Returns404 [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.GetMemory_ReturnsMemoryForCurrentProfile [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.CreateProfile_DuplicateName_Returns400 [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.UpdateMemory_WithValidContent_Returns200 [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.UpdateProfile_MissingId_Returns404 [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.UpdateProfile_ExistingId_Returns200 [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.SwitchProfile_ExistingId_Returns200 [SKIP]
+[xUnit.net 00:00:00.10]     Hermes.Integration.Tests.RestApiContractTests.DeleteProfile_MissingId_Returns404 [SKIP]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.DeleteSession_MissingId_Returns404 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetMemory_ReturnsMemoryForCurrentProfile [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.CreateProfile_DuplicateName_Returns400 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.UpdateMemory_WithValidContent_Returns200 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.UpdateProfile_MissingId_Returns404 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.UpdateProfile_ExistingId_Returns200 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.SwitchProfile_ExistingId_Returns200 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.DeleteProfile_MissingId_Returns404 [1 ms]
+[xUnit.net 00:00:00.12]     Hermes.Integration.Tests.RestApiContractTests.GetSession_ExistingId_ReturnsSession [SKIP]
+[xUnit.net 00:00:00.12]     Hermes.Integration.Tests.RestApiContractTests.GetSkills_ReturnsAllRegisteredSkills [SKIP]
+[xUnit.net 00:00:00.12]     Hermes.Integration.Tests.RestApiContractTests.GetProfiles_ReturnsAllProfiles [SKIP]
+[xUnit.net 00:00:00.12]     Hermes.Integration.Tests.RestApiContractTests.SwitchSession_ExistingId_Returns200 [SKIP]
+[xUnit.net 00:00:00.12]     Hermes.Integration.Tests.RestApiContractTests.DeleteProfile_ExistingId_Returns204 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.GetProfile_MissingId_Returns404 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.GetSession_MissingId_Returns404 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.SwitchSession_MissingId_Returns404 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.GetProfile_ExistingId_ReturnsProfile [SKIP]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetSession_ExistingId_ReturnsSession [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetSkills_ReturnsAllRegisteredSkills [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetProfiles_ReturnsAllProfiles [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.SwitchSession_ExistingId_Returns200 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.DeleteProfile_ExistingId_Returns204 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetProfile_MissingId_Returns404 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetSession_MissingId_Returns404 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.SwitchSession_MissingId_Returns404 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetProfile_ExistingId_ReturnsProfile [1 ms]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.SwitchProfile_MissingId_Returns404 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.GetSessions_ReturnsSessionsForCurrentProfile [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.DeleteSession_ExistingId_Returns204 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.CreateSession_WithValidData_Returns201 [SKIP]
+[xUnit.net 00:00:00.13]     Hermes.Integration.Tests.RestApiContractTests.CreateProfile_WithValidData_Returns201 [SKIP]
+
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 5 ms - Hermes.Benchmarks.dll (net10.0)
+  Skipped Hermes.Integration.Tests.RestApiContractTests.SwitchProfile_MissingId_Returns404 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.GetSessions_ReturnsSessionsForCurrentProfile [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.DeleteSession_ExistingId_Returns204 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.CreateSession_WithValidData_Returns201 [1 ms]
+  Skipped Hermes.Integration.Tests.RestApiContractTests.CreateProfile_WithValidData_Returns201 [1 ms]
+
+Passed!  - Failed:     0, Passed:     3, Skipped:    22, Total:    25, Duration: 93 ms - Hermes.Integration.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:   214, Skipped:     1, Total:   215, Duration: 556 ms - Hermes.Core.Tests.dll (net10.0)

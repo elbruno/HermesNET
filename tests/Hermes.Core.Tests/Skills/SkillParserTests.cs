@@ -115,4 +115,120 @@ public sealed class SkillParserTests
         result.Type.Should().Be("action");
         result.Description.Should().Be("A minimal valid skill for testing");
     }
+
+    // ── T17 Front Matter: Valid YAML front matter ─────────────────────────────
+
+    [Fact]
+    public void SkillParser_WithFrontMatter_ReturnsSkillDescriptor()
+    {
+        var input = """
+            ---
+            name: fm-skill
+            description: A skill using YAML front matter
+            version: 1.2
+            type: tool
+            ---
+            # Body Content
+
+            Markdown body here.
+            """;
+
+        var result = _parser.Parse(input);
+
+        result.Should().NotBeNull();
+        result.Name.Should().Be("fm-skill");
+        result.Type.Should().Be("tool");
+        result.Description.Should().Be("A skill using YAML front matter");
+        result.SchemaVersion.Should().Be(new Version(1, 2));
+        result.Content.Should().Contain("Body Content");
+    }
+
+    // ── T17 Front Matter: Memory type ─────────────────────────────────────────
+
+    [Fact]
+    public void SkillParser_WithMemoryType_ReturnsDescriptor()
+    {
+        var input = """
+            ---
+            name: context-recall
+            description: Recalls the active memory context
+            type: memory
+            ---
+            """;
+
+        var result = _parser.Parse(input);
+        result.Type.Should().Be("memory");
+    }
+
+    // ── T17 Front Matter: Policy type ─────────────────────────────────────────
+
+    [Fact]
+    public void SkillParser_WithPolicyType_ReturnsDescriptor()
+    {
+        var input = """
+            ---
+            name: access-control
+            description: Enforces access control rules
+            type: policy
+            ---
+            """;
+
+        var result = _parser.Parse(input);
+        result.Type.Should().Be("policy");
+    }
+
+    // ── T17 Front Matter: Extra fields stored as metadata ─────────────────────
+
+    [Fact]
+    public void SkillParser_WithFrontMatterExtraFields_StoredAsMetadata()
+    {
+        var input = """
+            ---
+            name: metadata-skill
+            description: Skill with extra metadata fields
+            type: tool
+            author: dallas
+            scope: profile
+            ---
+            """;
+
+        var result = _parser.Parse(input);
+
+        result.Metadata.Should().NotBeNull();
+        result.Metadata!["author"].Should().Be("dallas");
+        result.Metadata["scope"].Should().Be("profile");
+    }
+
+    // ── T17 Front Matter: Missing closing delimiter ───────────────────────────
+
+    [Fact]
+    public void SkillParser_WithFrontMatterMissingClosingDelimiter_Throws()
+    {
+        var input = """
+            ---
+            name: incomplete
+            description: Missing closing delimiter
+            type: tool
+            """;
+
+        var act = () => _parser.Parse(input);
+        act.Should().Throw<SkillParseException>()
+           .WithMessage("*---*");
+    }
+
+    // ── T17 Flat YAML: Version field is allowed ────────────────────────────────
+
+    [Fact]
+    public void SkillParser_FlatYaml_WithVersionField_DoesNotThrow()
+    {
+        var yaml = """
+            name: versioned-skill
+            type: action
+            description: Flat YAML with version field
+            version: 1.0
+            """;
+
+        var result = _parser.Parse(yaml);
+        result.Name.Should().Be("versioned-skill");
+    }
 }

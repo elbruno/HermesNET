@@ -152,10 +152,10 @@ D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.G
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.AssemblyInfoInputs.cache
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.AssemblyInfo.cs
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.csproj.CoreCompileInputs.cache
+D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.sourcelink.json
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.L.F820BD18.Up2Date
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.dll
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\refint\Hermes.LoadTests.dll
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.pdb
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.genruntimeconfig.cache
 D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\ref\Hermes.LoadTests.dll
-D:\elbruno\HermesNET\tests\Hermes.LoadTests\obj\Debug\net10.0\Hermes.LoadTests.sourcelink.json

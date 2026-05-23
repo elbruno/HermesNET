@@ -1,4 +1,6 @@
 using Microsoft.Data.Sqlite;
+using System.Diagnostics;
+using Hermes.Core.Telemetry;
 
 namespace Hermes.Core.Memory;
 
@@ -61,6 +63,10 @@ public sealed class MemoryStore : IMemoryService, IDisposable
         string profileId,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("MemoryStore.LoadMemoryAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "load");
+        
         ValidateProfileId(profileId);
         EnsureInitialized();
 
@@ -92,6 +98,11 @@ public sealed class MemoryStore : IMemoryService, IDisposable
         string content,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("MemoryStore.UpdateMemoryAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "update");
+        span?.SetTag("memory.size", content.Length);
+        
         ValidateProfileId(profileId);
         ValidateContent(content);
         EnsureInitialized();
@@ -122,6 +133,10 @@ public sealed class MemoryStore : IMemoryService, IDisposable
         string profileId,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("MemoryStore.LoadUserProfileAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "load");
+        
         ValidateProfileId(profileId);
         EnsureInitialized();
 
@@ -151,6 +166,11 @@ public sealed class MemoryStore : IMemoryService, IDisposable
         string data,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("MemoryStore.UpdateUserProfileAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "update");
+        span?.SetTag("memory.size", data.Length);
+        
         ValidateProfileId(profileId);
         EnsureInitialized();
 

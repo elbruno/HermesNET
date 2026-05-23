@@ -1,5 +1,7 @@
 using Microsoft.Data.Sqlite;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Hermes.Core.Telemetry;
 
 namespace Hermes.Core.Profiles;
 
@@ -48,6 +50,9 @@ public sealed class ProfileService : IProfileService, IDisposable
         string? description = null,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.CreateAsync");
+        span?.SetTag("operation", "create");
+        
         EnsureInitialized();
 
         var profile = new Profile
@@ -58,6 +63,8 @@ public sealed class ProfileService : IProfileService, IDisposable
             CreatedAt = DateTimeOffset.UtcNow,
             UpdatedAt = DateTimeOffset.UtcNow
         };
+        
+        span?.SetTag("profile.id", profile.Id);
 
         using var cmd = _connection.CreateCommand();
         cmd.CommandText = """
@@ -84,6 +91,10 @@ public sealed class ProfileService : IProfileService, IDisposable
 
     public async Task<Profile?> GetProfileAsync(string id, CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.GetAsync");
+        span?.SetTag("profile.id", id);
+        span?.SetTag("operation", "read");
+        
         EnsureInitialized();
         return await QuerySingleAsync("WHERE Id = @param", id, cancellationToken);
     }
@@ -100,6 +111,10 @@ public sealed class ProfileService : IProfileService, IDisposable
         string? description = null,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.UpdateAsync");
+        span?.SetTag("profile.id", id);
+        span?.SetTag("operation", "update");
+        
         EnsureInitialized();
 
         var existing = await GetProfileAsync(id, cancellationToken)
@@ -132,6 +147,10 @@ public sealed class ProfileService : IProfileService, IDisposable
 
     public async Task DeleteProfileAsync(string id, CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.DeleteAsync");
+        span?.SetTag("profile.id", id);
+        span?.SetTag("operation", "delete");
+        
         EnsureInitialized();
 
         using var txn = _connection.BeginTransaction();
@@ -165,6 +184,9 @@ public sealed class ProfileService : IProfileService, IDisposable
     public async IAsyncEnumerable<Profile> ListProfilesAsync(
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.ListAsync");
+        span?.SetTag("operation", "list");
+        
         EnsureInitialized();
 
         using var cmd = _connection.CreateCommand();
@@ -181,6 +203,10 @@ public sealed class ProfileService : IProfileService, IDisposable
 
     public async Task SwitchProfileAsync(string id, CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.SwitchAsync");
+        span?.SetTag("profile.id", id);
+        span?.SetTag("operation", "switch");
+        
         EnsureInitialized();
 
         // Verify the profile exists before switching — fail-fast.

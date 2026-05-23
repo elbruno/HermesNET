@@ -1,5 +1,7 @@
 using Microsoft.Data.Sqlite;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Hermes.Core.Telemetry;
 
 namespace Hermes.Core.Profiles;
 
@@ -52,6 +54,10 @@ public sealed class SessionService : ISessionService, IDisposable
         string name,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.CreateAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "create");
+        
         EnsureInitialized();
 
         // Verify the owning profile exists before creating a session.
@@ -68,6 +74,8 @@ public sealed class SessionService : ISessionService, IDisposable
             LastAccessed = now,
             Metadata = null
         };
+        
+        span?.SetTag("session.id", session.Id);
 
         using var cmd = _connection.CreateCommand();
         cmd.CommandText = """
@@ -87,6 +95,10 @@ public sealed class SessionService : ISessionService, IDisposable
 
     public async Task<ProfileSession?> GetSessionAsync(string id, CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.GetAsync");
+        span?.SetTag("session.id", id);
+        span?.SetTag("operation", "read");
+        
         EnsureInitialized();
 
         using var cmd = _connection.CreateCommand();
@@ -106,6 +118,10 @@ public sealed class SessionService : ISessionService, IDisposable
         string? metadata,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.SaveAsync");
+        span?.SetTag("session.id", id);
+        span?.SetTag("operation", "save");
+        
         EnsureInitialized();
 
         using var cmd = _connection.CreateCommand();
@@ -127,6 +143,10 @@ public sealed class SessionService : ISessionService, IDisposable
         string profileId,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.ListByProfileAsync");
+        span?.SetTag("profile.id", profileId);
+        span?.SetTag("operation", "list");
+        
         EnsureInitialized();
 
         // Single query — no N+1 risk by design.
@@ -146,10 +166,16 @@ public sealed class SessionService : ISessionService, IDisposable
 
     public async Task SwitchSessionAsync(string id, CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.SwitchAsync");
+        span?.SetTag("session.id", id);
+        span?.SetTag("operation", "switch");
+        
         EnsureInitialized();
 
         var session = await GetSessionAsync(id, cancellationToken)
             ?? throw new KeyNotFoundException($"Session '{id}' not found.");
+
+        span?.SetTag("profile.id", session.ProfileId);
 
         // Enforce cross-profile isolation at the service level.
         var currentProfile = await _profileService.GetCurrentProfileAsync(cancellationToken);
@@ -193,6 +219,10 @@ public sealed class SessionService : ISessionService, IDisposable
 
     public async Task DeleteSessionAsync(string id, CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.DeleteAsync");
+        span?.SetTag("session.id", id);
+        span?.SetTag("operation", "delete");
+        
         EnsureInitialized();
 
         using var txn = _connection.BeginTransaction();
@@ -228,6 +258,10 @@ public sealed class SessionService : ISessionService, IDisposable
         string name,
         CancellationToken cancellationToken = default)
     {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SessionService.UpdateAsync");
+        span?.SetTag("session.id", id);
+        span?.SetTag("operation", "update");
+        
         EnsureInitialized();
 
         using var cmd = _connection.CreateCommand();

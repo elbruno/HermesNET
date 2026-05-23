@@ -7,6 +7,12 @@ namespace Hermes.Core.Skills;
 public interface ISkillRegistry
 {
     /// <summary>
+    /// Registers a pre-parsed <paramref name="skillDefinition"/> directly.
+    /// Throws <see cref="DuplicateSkillException"/> if a skill with the same ID/Name already exists.
+    /// </summary>
+    Task RegisterSkillAsync(SkillDescriptor skillDefinition);
+
+    /// <summary>
     /// Returns the descriptor for <paramref name="skillId"/>.
     /// Throws <see cref="KeyNotFoundException"/> with the ID in the message if not found.
     /// </summary>
@@ -17,7 +23,7 @@ public interface ISkillRegistry
 
     /// <summary>
     /// Searches by skill ID, Name, or Description (case-insensitive).
-    /// Returns <c>null</c> if not found — never throws.
+    /// Returns <c>null</c> if not found -- never throws.
     /// </summary>
     Task<SkillDescriptor?> FindByNameAsync(string name);
 
@@ -26,6 +32,13 @@ public interface ISkillRegistry
     /// Returns <see cref="SkillValidationResult.Success"/> when all checks pass.
     /// </summary>
     Task<SkillValidationResult> ValidateAsync(string skillId);
+
+    /// <summary>
+    /// Returns the metadata key-value pairs attached to the skill identified by
+    /// <paramref name="skillId"/>. Returns an empty dictionary when the skill has
+    /// no metadata. Throws <see cref="KeyNotFoundException"/> if the skill is not found.
+    /// </summary>
+    Task<IReadOnlyDictionary<string, string>> GetSkillMetadataAsync(string skillId);
 
     /// <summary>
     /// Loads all <c>.md</c> files from <paramref name="skillsDirectory"/> into the registry.

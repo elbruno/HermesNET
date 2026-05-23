@@ -1,9 +1,13 @@
 global using System;
 global using System.Collections.Generic;
+global using System.Linq;
 global using System.Net.Http.Json;
 global using System.Threading.Tasks;
 global using FluentAssertions;
-global using Hermes.Core.Session;
+global using Hermes.Core.Profiles;
 global using Hermes.Core.Services;
 global using Hermes.Core.Telemetry;
+global using Hermes.Core.Session;
+global using Microsoft.AspNetCore.Mvc.Testing;
+global using Microsoft.Extensions.DependencyInjection;
 global using Xunit;
