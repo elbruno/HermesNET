@@ -5,6 +5,24 @@
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <!-- Global .NET Tool packaging -->
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>hermesnet</ToolCommandName>
+    <PublishRelease>true</PublishRelease>
+    <!-- NuGet package metadata -->
+    <PackageId>hermesnet</PackageId>
+    <Version>2.0.0</Version>
+    <Title>HermesNET</Title>
+    <Authors>Bruno Capuano;Copilot</Authors>
+    <Description>Hermes.NET: Distributed agent runtime with skills, tools, memory, and observability.</Description>
+    <PackageTags>agent;runtime;skills;tools;ai;distributed</PackageTags>
+    <PackageProjectUrl>https://github.com/elbruno/HermesNET</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/elbruno/HermesNET</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <!-- Suppress duplicate publish file error: Hermes.Host (Web SDK) also emits appsettings.json -->
+    <ErrorOnDuplicatePublishOutputFiles>false</ErrorOnDuplicatePublishOutputFiles>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +42,11 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <!-- Include README in NuGet package -->
+  <ItemGroup>
+    <None Include="../../README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
