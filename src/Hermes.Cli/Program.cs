@@ -7,13 +7,15 @@ using Hermes.Core.Services;
 using Hermes.Core.Session;
 using Hermes.Core.Profiles;
 using Hermes.Core.Skills;
+using Hermes.Core.Configuration;
 using Hermes.Cli.Commands;
 using Hermes.Cli.Configuration;
 
 var builder = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddJsonFile(HermesCliConfigStore.GetDefaultConfigPath(), optional: true, reloadOnChange: true);
+    .AddHermesSettings(
+        Path.Combine(AppContext.BaseDirectory, "appsettings.json"),
+        HermesSettingsPaths.GetDefaultUserConfigPath());
 
 var configuration = builder.Build();
 

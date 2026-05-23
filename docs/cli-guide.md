@@ -519,6 +519,8 @@ hermes chat --profile dev --message "Explain REST vs GraphQL"
 
 HermesNET reads provider settings from `appsettings.json` in the CLI project and overlays a user config file created by `hermesnet config`:
 
+OpenAI API keys are stored in the native OS credential store and are merged in at runtime.
+
 - Windows: `%APPDATA%\Hermes\appsettings.json`
 - macOS/Linux: `~/.hermes/appsettings.json`
 
@@ -537,7 +539,6 @@ Switch to the OpenAI provider:
 {
   "Provider": "OpenAI",
   "OpenAI": {
-    "ApiKey": "<your-key>",
     "Model": "gpt-4o"
   }
 }

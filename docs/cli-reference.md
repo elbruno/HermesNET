@@ -346,7 +346,7 @@ Configure the active LLM provider and model settings.
 
 Interactively configure the HermesNET LLM provider and model.
 
-This command presents a guided workflow to select and configure your LLM provider (OpenAI or Ollama) along with necessary credentials and model parameters. Configuration is saved to a local config file for persistence across sessions.
+This command presents a guided workflow to select and configure your LLM provider (OpenAI or Ollama) along with necessary credentials and model parameters. Configuration is saved to a local config file for persistence across sessions, while the OpenAI API key is stored in the OS credential store.
 
 | Option | Required | Description |
 |---|---|---|
@@ -360,7 +360,7 @@ hermesnet config
 **Workflow:**
 1. Choose LLM provider (OpenAI or Ollama)
 2. Enter provider-specific settings:
-   - **OpenAI:** API key and model name
+   - **OpenAI:** API key (stored in the OS credential store) and model name
    - **Ollama:** Base URL and model name
 3. Validates configuration and displays a summary
 

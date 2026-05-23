@@ -2,6 +2,7 @@ using Hermes.Core.Memory;
 using Hermes.Core.Profiles;
 using Hermes.Core.Services;
 using Hermes.Core.Telemetry;
+using Hermes.Core.Configuration;
 using Hermes.Host;
 using Hermes.Host.Middleware;
 using Hermes.Host.Providers;
@@ -9,6 +10,11 @@ using Microsoft.OpenApi.Models;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration
+    .AddHermesSettings(
+        Path.Combine(AppContext.BaseDirectory, "appsettings.json"),
+        HermesSettingsPaths.GetDefaultUserConfigPath());
 
 var connectionString = builder.Configuration["Database:ConnectionString"] ?? "Data Source=hermes.db";
 
