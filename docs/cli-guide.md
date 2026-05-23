@@ -517,7 +517,10 @@ hermes chat --profile dev --message "Explain REST vs GraphQL"
 
 ## Configuration
 
-HermesNET reads provider settings from `appsettings.json` in the CLI project (or via environment variables):
+HermesNET reads provider settings from `appsettings.json` in the CLI project and overlays a user config file created by `hermesnet config`:
+
+- Windows: `%APPDATA%\Hermes\appsettings.json`
+- macOS/Linux: `~/.hermes/appsettings.json`
 
 ```json
 {
@@ -540,11 +543,13 @@ Switch to the OpenAI provider:
 }
 ```
 
+Run diagnostics with `hermesnet doctor` to validate the active provider, config files, and required settings.
+
 ---
 
 ## Troubleshooting
 
-### `hermes: command not found`
+### `hermesnet: command not found`
 
 The .NET global tools path is not on your `PATH`.
 
@@ -671,3 +676,5 @@ hermes memory update --content $'# My Context\n\nPrefer concise answers.'
 | `hermes tool list [-c <category>]` | List tools (optionally by category) |
 | `hermes tool show <name>` | Inspect a tool |
 | `hermes chat -p <profile> -m <message>` | Send a chat message |
+| `hermesnet config` | Set up LLM provider settings |
+| `hermesnet doctor` | Run configuration diagnostics |

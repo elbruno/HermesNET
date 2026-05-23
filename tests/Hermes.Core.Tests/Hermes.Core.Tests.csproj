@@ -30,4 +30,8 @@
     <Compile Remove="Integration/ChatClientFactoryTests.cs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../../src/Hermes.Cli/Hermes.Cli.csproj" />
+  </ItemGroup>
+
 </Project>

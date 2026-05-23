@@ -25,6 +25,8 @@ Then use:
 hermesnet chat "solve 2+2"
 hermesnet profile list
 hermesnet session create my-session
+hermesnet config
+hermesnet doctor
 ```
 
 ### Upgrade to latest
@@ -135,11 +137,15 @@ dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 # Start Ollama locally (if using local provider)
 ollama serve
 
-# In another terminal, run the Hermes CLI
+# In another terminal, run the HermesNET CLI
 dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
 ```
 
-**Configuration:** The CLI uses `appsettings.json` in the Hermes.Cli project:
+**Configuration:** Run `hermesnet config` to create a user config file in:
+- Windows: `%APPDATA%\Hermes\appsettings.json`
+- macOS/Linux: `~/.hermes/appsettings.json`
+
+The CLI still ships default settings in `src/Hermes.Cli/appsettings.json`:
 ```json
 {
   "Provider": "Ollama",  // Switch to "OpenAI" for cloud provider
@@ -159,7 +165,7 @@ dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
 ## Documentation
 
 ### Release Information
-- **[Release Notes v0.1.0](./docs/release-notes-v0.1.0.md)** — First NuGet release, package metadata, and included components
+- **[Release Notes v2.0.1](./docs/release-notes-v2.0.1.md)** — CLI config/doctor commands and Spectre.Console UX
 - **[Publishing Guide](./docs/publishing.md)** — GitHub Release + NuGet trusted publishing (no API key)
 
 ### Getting Started
