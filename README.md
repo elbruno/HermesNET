@@ -2,6 +2,28 @@
 
 A comprehensive runtime for building intelligent agent applications with session persistence, observability, and provider abstraction built on .NET 10.
 
+## Installation
+
+### As a Global .NET Tool
+
+```bash
+dotnet tool install -g hermesnet
+```
+
+Then use:
+
+```bash
+hermesnet chat "solve 2+2"
+hermesnet profile list
+hermesnet session create my-session
+```
+
+### Upgrade to latest
+
+```bash
+dotnet tool update -g hermesnet
+```
+
 ## Project Structure
 
 ### Core Projects
@@ -203,6 +225,20 @@ The M1 baseline establishes a performance reference point with OTel fully enable
 - **Results:** Committed to `M1-BASELINE.txt`
 
 This baseline is the reference point for M2's "no >20% OTel overhead" regression gate.
+
+## CLI Tool
+
+HermesNET is available as a global .NET tool:
+
+```bash
+dotnet tool install -g hermesnet
+hermes profile create myprofile
+hermes chat --profile myprofile --message "Hello!"
+```
+
+**Get started:** See [Quick Start Guide](docs/quickstart.md) or the [Full CLI User Guide](docs/cli-guide.md)
+
+---
 
 ## Contributing
 
