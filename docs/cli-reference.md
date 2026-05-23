@@ -1,6 +1,8 @@
 # HermesNET CLI Reference
 
-Exhaustive reference for all `hermes` CLI commands, flags, and exit codes.
+Exhaustive reference for all `hermesnet` CLI commands, flags, and exit codes.
+
+> **Note:** This reference document is the source of truth for CLI commands. It must always reflect the commands currently exposed by the CLI tool. See [Program.cs](../src/Hermes.Cli/Program.cs) for the authoritative command definitions.
 
 For installation instructions and workflows, see [cli-guide.md](./cli-guide.md).
 
@@ -8,12 +10,13 @@ For installation instructions and workflows, see [cli-guide.md](./cli-guide.md).
 
 - [Global Flags](#global-flags)
 - [Commands](#commands)
-  - [`hermes profile`](#hermes-profile)
-  - [`hermes session`](#hermes-session)
-  - [`hermes skill`](#hermes-skill)
-  - [`hermes memory`](#hermes-memory)
-  - [`hermes tool`](#hermes-tool)
-  - [`hermes chat`](#hermes-chat)
+  - [`hermesnet profile`](#hermesnet-profile)
+  - [`hermesnet session`](#hermesnet-session)
+  - [`hermesnet skill`](#hermesnet-skill)
+  - [`hermesnet memory`](#hermesnet-memory)
+  - [`hermesnet config`](#hermesnet-config)
+  - [`hermesnet doctor`](#hermesnet-doctor)
+  - [`hermesnet chat`](#hermesnet-chat)
 - [Exit Codes](#exit-codes)
 - [Quick Reference](#quick-reference)
 
@@ -30,13 +33,13 @@ For installation instructions and workflows, see [cli-guide.md](./cli-guide.md).
 
 ## Commands
 
-### `hermes profile`
+### `hermesnet profile`
 
 Manage isolated profiles. Each profile has its own sessions and memory.
 
 ---
 
-#### `hermes profile create <name>`
+#### `hermesnet profile create <name>`
 
 Create a new profile.
 
@@ -47,8 +50,8 @@ Create a new profile.
 
 **Examples:**
 ```bash
-hermes profile create dev
-hermes profile create work --description "Client project workspace"
+hermesnet profile create dev
+hermesnet profile create work --description "Client project workspace"
 ```
 
 **Output:**
@@ -58,13 +61,13 @@ Created profile 'dev' (a1b2c3d4-...)
 
 ---
 
-#### `hermes profile list`
+#### `hermesnet profile list`
 
 List all profiles. The currently active profile is marked with `*`.
 
 **Example:**
 ```bash
-hermes profile list
+hermesnet profile list
 ```
 
 **Output:**
@@ -77,7 +80,7 @@ e5f6g7h8-...  work
 
 ---
 
-#### `hermes profile switch <name-or-id>`
+#### `hermesnet profile switch <name-or-id>`
 
 Activate a profile by name or ID.
 
@@ -87,8 +90,8 @@ Activate a profile by name or ID.
 
 **Examples:**
 ```bash
-hermes profile switch work
-hermes profile switch e5f6g7h8-...
+hermesnet profile switch work
+hermesnet profile switch e5f6g7h8-...
 ```
 
 **Output:**
@@ -98,13 +101,13 @@ Switched to profile 'work' (e5f6g7h8-...)
 
 ---
 
-#### `hermes profile current`
+#### `hermesnet profile current`
 
 Show the currently active profile.
 
 **Example:**
 ```bash
-hermes profile current
+hermesnet profile current
 ```
 
 **Output:**
@@ -114,18 +117,18 @@ e5f6g7h8-...  work
 
 If no profile is active:
 ```
-No active profile. Use: hermes profile switch <name>
+No active profile. Use: hermesnet profile switch <name>
 ```
 
 ---
 
-### `hermes session`
+### `hermesnet session`
 
 Manage sessions within a profile. Sessions are named conversation containers.
 
 ---
 
-#### `hermes session create <name>`
+#### `hermesnet session create <name>`
 
 Create a new session under the current (or specified) profile.
 
@@ -136,8 +139,8 @@ Create a new session under the current (or specified) profile.
 
 **Examples:**
 ```bash
-hermes session create "Q&A Bot"
-hermes session create "Research" --profile e5f6g7h8-...
+hermesnet session create "Q&A Bot"
+hermesnet session create "Research" --profile e5f6g7h8-...
 ```
 
 **Output:**
@@ -147,7 +150,7 @@ Created session 'Q&A Bot' (s1t2u3v4-...) under profile e5f6g7h8-...
 
 ---
 
-#### `hermes session list`
+#### `hermesnet session list`
 
 List all sessions for the current (or specified) profile. The active session is marked with `*`.
 
@@ -157,8 +160,8 @@ List all sessions for the current (or specified) profile. The active session is 
 
 **Examples:**
 ```bash
-hermes session list
-hermes session list --profile e5f6g7h8-...
+hermesnet session list
+hermesnet session list --profile e5f6g7h8-...
 ```
 
 **Output:**
@@ -169,7 +172,7 @@ w5x6y7z8-...  Research   (accessed: 2026-05-21 10:30:00Z)
 
 ---
 
-#### `hermes session switch <id>`
+#### `hermesnet session switch <id>`
 
 Activate a session by ID.
 
@@ -179,7 +182,7 @@ Activate a session by ID.
 
 **Example:**
 ```bash
-hermes session switch s1t2u3v4-...
+hermesnet session switch s1t2u3v4-...
 ```
 
 **Output:**
@@ -189,13 +192,13 @@ Switched to session 'Q&A Bot' (s1t2u3v4-...)
 
 ---
 
-#### `hermes session current`
+#### `hermesnet session current`
 
 Show the currently active session.
 
 **Example:**
 ```bash
-hermes session current
+hermesnet session current
 ```
 
 **Output:**
@@ -205,24 +208,24 @@ s1t2u3v4-...  Q&A Bot  (profile: e5f6g7h8-...)
 
 If no session is active:
 ```
-No active session. Use: hermes session switch <id>
+No active session. Use: hermesnet session switch <id>
 ```
 
 ---
 
-### `hermes skill`
+### `hermesnet skill`
 
 Browse registered prompt skills.
 
 ---
 
-#### `hermes skill list`
+#### `hermesnet skill list`
 
 List all skills loaded in the registry.
 
 **Example:**
 ```bash
-hermes skill list
+hermesnet skill list
 ```
 
 **Output:**
@@ -235,7 +238,7 @@ translate                      prompt   1.0        Translate text to a target la
 
 ---
 
-#### `hermes skill show <name>`
+#### `hermesnet skill show <name>`
 
 Display the full definition and metadata for a skill.
 
@@ -245,7 +248,7 @@ Display the full definition and metadata for a skill.
 
 **Example:**
 ```bash
-hermes skill show summarize
+hermesnet skill show summarize
 ```
 
 **Output:**
@@ -267,13 +270,13 @@ Content:
 
 ---
 
-### `hermes memory`
+### `hermesnet memory`
 
 Manage persistent memory and user profile documents per profile.
 
 ---
 
-#### `hermes memory show`
+#### `hermesnet memory show`
 
 Display the `MEMORY.md` content for the current (or specified) profile.
 
@@ -283,13 +286,13 @@ Display the `MEMORY.md` content for the current (or specified) profile.
 
 **Examples:**
 ```bash
-hermes memory show
-hermes memory show --profile e5f6g7h8-...
+hermesnet memory show
+hermesnet memory show --profile e5f6g7h8-...
 ```
 
 ---
 
-#### `hermes memory update`
+#### `hermesnet memory update`
 
 Replace the `MEMORY.md` content for the current (or specified) profile.
 
@@ -300,8 +303,8 @@ Replace the `MEMORY.md` content for the current (or specified) profile.
 
 **Examples:**
 ```bash
-hermes memory update --content "# My Context\n\nI prefer concise responses."
-hermes memory update --profile e5f6g7h8-... --content "# Work Context\n\n..."
+hermesnet memory update --content "# My Context\n\nI prefer concise responses."
+hermesnet memory update --profile e5f6g7h8-... --content "# Work Context\n\n..."
 ```
 
 **Output:**
@@ -311,7 +314,7 @@ Memory updated for profile 'e5f6g7h8-...'.
 
 ---
 
-#### `hermes memory profile-show`
+#### `hermesnet memory profile-show`
 
 Display the `USER.md` (user profile document) for the current (or specified) profile.
 
@@ -321,8 +324,8 @@ Display the `USER.md` (user profile document) for the current (or specified) pro
 
 **Examples:**
 ```bash
-hermes memory profile-show
-hermes memory profile-show --profile e5f6g7h8-...
+hermesnet memory profile-show
+hermesnet memory profile-show --profile e5f6g7h8-...
 ```
 
 **Output:**
@@ -333,66 +336,113 @@ hermes memory profile-show --profile e5f6g7h8-...
 
 ---
 
-### `hermes tool`
+### `hermesnet config`
 
-Inspect registered tools that the AI agent can invoke.
+Configure the active LLM provider and model settings.
 
 ---
 
-#### `hermes tool list`
+#### `hermesnet config`
 
-List all registered tools, optionally filtered by category.
+Interactively configure the HermesNET LLM provider and model.
+
+This command presents a guided workflow to select and configure your LLM provider (OpenAI or Ollama) along with necessary credentials and model parameters. Configuration is saved to a local config file for persistence across sessions.
 
 | Option | Required | Description |
 |---|---|---|
-| `--category`, `-c` | ❌ | Filter by category (e.g., `read_file`, `system_info`) |
+| (none) | N/A | Runs interactive configuration wizard |
 
 **Examples:**
 ```bash
-hermes tool list
-hermes tool list --category read_file
+hermesnet config
 ```
+
+**Workflow:**
+1. Choose LLM provider (OpenAI or Ollama)
+2. Enter provider-specific settings:
+   - **OpenAI:** API key and model name
+   - **Ollama:** Base URL and model name
+3. Validates configuration and displays a summary
 
 **Output:**
 ```
-NAME                           CATEGORY         TIMEOUT(ms)  DESCRIPTION
-------------------------------------------------------------------------------------------
-read_file                      read_file        5000         Read a file from the filesystem
-get_system_info                system_info      2000         Retrieve OS and runtime info
-```
+─ HermesNET config ─
+Saving user settings to /home/user/.config/hermesnet/config.json
 
-Tools outside the safe-category whitelist are shown as `[DENIED]` and cannot be invoked.
+Choose the LLM provider:
+> OpenAI
+  Ollama
+
+OpenAI API key [current: [set]]: 
+OpenAI model [current: gpt-4]: 
+
+─ Configuration summary ─
+┌─────────────────────┬────────┬─────────────────────┐
+│ Check               │ Status │ Details             │
+├─────────────────────┼────────┼─────────────────────┤
+│ Config file exists  │ PASS   │ /home/user/...      │
+│ Provider set        │ PASS   │ OpenAI              │
+│ API key configured  │ PASS   │ Key is set          │
+│ Model set           │ PASS   │ gpt-4               │
+└─────────────────────┴────────┴─────────────────────┘
+```
 
 ---
 
-#### `hermes tool show <name>`
+### `hermesnet doctor`
 
-Show full detail for a registered tool, including its parameters.
+Inspect HermesNET configuration and runtime health.
 
-| Argument | Required | Description |
+---
+
+#### `hermesnet doctor`
+
+Run diagnostics on the HermesNET setup and display a health report.
+
+This command inspects your configuration files, validates LLM provider settings, checks database connectivity, and reports any issues that may affect runtime.
+
+| Option | Required | Description |
 |---|---|---|
-| `<name>` | ✅ | Tool name |
+| (none) | N/A | Runs diagnostics and displays results |
 
-**Example:**
+**Examples:**
 ```bash
-hermes tool show read_file
+hermesnet doctor
 ```
 
 **Output:**
 ```
-Name        : read_file
-Category    : read_file
-Status      : ALLOWED
-Description : Read a file from the filesystem
-MaxInputSize: 65536 bytes
-Timeout     : 5000 ms
-Parameters  :
-  path (string, required) [file-path]: Absolute or relative path to the file
+─ HermesNET doctor ─
+Effective config from /app/appsettings.json
+User config path: /home/user/.config/hermesnet/config.json
+
+┌──────────────────────┬────────┬──────────────────────────┐
+│ Check                │ Status │ Details                  │
+├──────────────────────┼────────┼──────────────────────────┤
+│ Config file exists   │ PASS   │ /home/user/.config/...   │
+│ Provider set         │ PASS   │ OpenAI                   │
+│ API key configured   │ PASS   │ Key is set               │
+│ Model set            │ PASS   │ gpt-4                    │
+│ Database connection  │ PASS   │ Connected to hermes.db   │
+└──────────────────────┴────────┴──────────────────────────┘
+
+No blocking issues found.
 ```
+
+**Exit codes:**
+- `0` - All checks passed
+- `1` - One or more checks failed
+
+**Check types:**
+- **Config file exists** - Validates that configuration files are readable
+- **Provider set** - Confirms an LLM provider is configured
+- **API key configured** - Validates required credentials
+- **Model set** - Confirms model selection
+- **Database connection** - Tests connectivity to the session/profile database
 
 ---
 
-### `hermes chat`
+### `hermesnet chat`
 
 Send a message to the AI model and print the response. The session is persisted automatically.
 
@@ -403,8 +453,8 @@ Send a message to the AI model and print the response. The session is persisted 
 
 **Examples:**
 ```bash
-hermes chat --profile dev --message "What is the capital of France?"
-hermes chat -p dev -m "Summarise the key differences between TCP and UDP."
+hermesnet chat --profile dev --message "What is the capital of France?"
+hermesnet chat -p dev -m "Summarise the key differences between TCP and UDP."
 ```
 
 **Output:**
@@ -430,19 +480,19 @@ Paris is the capital of France.
 
 | Command | Description |
 |---------|-------------|
-| `hermes profile create <name> [-d <desc>]` | Create a new profile |
-| `hermes profile list` | List all profiles |
-| `hermes profile switch <name-or-id>` | Activate a profile |
-| `hermes profile current` | Show active profile |
-| `hermes session create <name> [-p <profile-id>]` | Create a session |
-| `hermes session list [-p <profile-id>]` | List sessions |
-| `hermes session switch <id>` | Activate a session |
-| `hermes session current` | Show active session |
-| `hermes skill list` | List all skills |
-| `hermes skill show <name>` | Inspect a skill |
-| `hermes memory show [-p <profile-id>]` | Show MEMORY.md |
-| `hermes memory update -c <content> [-p <profile-id>]` | Update MEMORY.md |
-| `hermes memory profile-show [-p <profile-id>]` | Show USER.md |
-| `hermes tool list [-c <category>]` | List tools |
-| `hermes tool show <name>` | Inspect a tool |
-| `hermes chat -p <profile> -m <message>` | Send a chat message |
+| `hermesnet profile create <name> [-d <desc>]` | Create a new profile |
+| `hermesnet profile list` | List all profiles |
+| `hermesnet profile switch <name-or-id>` | Activate a profile |
+| `hermesnet profile current` | Show active profile |
+| `hermesnet session create <name> [-p <profile-id>]` | Create a session |
+| `hermesnet session list [-p <profile-id>]` | List sessions |
+| `hermesnet session switch <id>` | Activate a session |
+| `hermesnet session current` | Show active session |
+| `hermesnet skill list` | List all skills |
+| `hermesnet skill show <name>` | Inspect a skill |
+| `hermesnet memory show [-p <profile-id>]` | Show MEMORY.md |
+| `hermesnet memory update -c <content> [-p <profile-id>]` | Update MEMORY.md |
+| `hermesnet memory profile-show [-p <profile-id>]` | Show USER.md |
+| `hermesnet config` | Configure LLM provider |
+| `hermesnet doctor` | Run configuration diagnostics |
+| `hermesnet chat -p <profile> -m <message>` | Send a chat message |
