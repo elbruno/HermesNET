@@ -150,8 +150,8 @@ dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
 ## Documentation
 
 ### Release Information
-- **[Release Notes v2.0.0](./docs/release-notes-m2.md)** — Production release, features, quality metrics
-- **[Migration Guide (M1→M2)](./docs/migration-m1-m2.md)** — Upgrade path for M1 users (or start here if new)
+- **[Release Notes v0.1.0](./docs/release-notes-v0.1.0.md)** — First NuGet release, package metadata, and included components
+- **[Publishing Guide](./docs/publishing.md)** — GitHub Release + NuGet trusted publishing (no API key)
 
 ### Getting Started
 - **[Quick Start Guide](./docs/quickstart.md)** — 5-minute setup

@@ -1,0 +1,84 @@
+name: Publish to NuGet
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Optional package version override (x.y.z)
+        required: false
+        type: string
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Authenticate to NuGet
+        uses: NuGet/login@v1
+        with:
+          nuget-api-endpoint: https://api.nuget.org/v3/index.json
+
+      - name: Restore packages
+        run: dotnet restore
+
+      - name: Build solution
+        run: dotnet build HermesNET.slnx --configuration Release --no-restore
+
+      - name: Test solution
+        run: dotnet test HermesNET.slnx --configuration Release --no-build
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          release_tag="${{ github.event.release.tag_name }}"
+          dispatch_version="${{ github.event.inputs.version }}"
+
+          if [[ "${GITHUB_EVENT_NAME}" == "release" && -n "$release_tag" ]]; then
+            version="${release_tag#v}"
+          elif [[ -n "$dispatch_version" ]]; then
+            version="$dispatch_version"
+          else
+            version="$(dotnet msbuild src/Hermes.Cli/Hermes.Cli.csproj -nologo -getProperty:Version | tail -n 1)"
+          fi
+
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid version: $version" >&2
+            exit 1
+          fi
+
+          echo "value=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Pack release packages
+        run: |
+          mkdir -p artifacts
+          dotnet pack src/Hermes.Core/Hermes.Core.csproj --configuration Release --no-build -p:Version=${{ steps.version.outputs.value }} --output artifacts
+          dotnet pack src/Hermes.Adapters/Hermes.Adapters.csproj --configuration Release --no-build -p:Version=${{ steps.version.outputs.value }} --output artifacts
+          dotnet pack src/Hermes.Cli/Hermes.Cli.csproj --configuration Release --no-build -p:Version=${{ steps.version.outputs.value }} --output artifacts
+
+      - name: Push packages to NuGet
+        run: |
+          find artifacts -maxdepth 1 -name '*.nupkg' ! -name '*.snupkg' -print0 | while IFS= read -r -d '' package; do
+            dotnet nuget push "$package" --source https://api.nuget.org/v3/index.json --skip-duplicate
+          done
+
+      - name: Upload packages
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget-packages
+          path: artifacts/*.nupkg
