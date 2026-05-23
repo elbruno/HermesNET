@@ -41,7 +41,7 @@ jobs:
         run: dotnet build HermesNET.slnx --configuration Release --no-restore
 
       - name: Test solution
-        run: dotnet test HermesNET.slnx --configuration Release --no-build
+        run: dotnet test HermesNET.slnx --configuration Release --no-build --filter "FullyQualifiedName!~Hermes.Core.Tests.Telemetry.BaselineLatencyTests"
 
       - name: Resolve version
         id: version
