@@ -1,3 +1,4 @@
+﻿using System.Runtime.CompilerServices;
 using Hermes.Core.Services;
 
 namespace Hermes.Host.Providers;
@@ -21,7 +22,10 @@ public class OpenAIClient : IChatClient
         throw new NotImplementedException("OpenAI provider will be implemented in a future milestone");
     }
 
-    public void Dispose()
-    {
-    }
+    public IAsyncEnumerable<string> StreamAsync(
+        IList<string> messages,
+        CancellationToken cancellationToken = default)
+        => throw new NotImplementedException("OpenAI streaming will be implemented in a future milestone");
+
+    public void Dispose() { }
 }
