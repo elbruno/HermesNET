@@ -35,7 +35,7 @@ public sealed class MarkdownSkillParser
 {
     private static readonly HashSet<string> ValidTypes = new(StringComparer.OrdinalIgnoreCase)
     {
-        "action", "tool", "skill", "chat"
+        "action", "tool", "skill", "chat", "memory", "policy"
     };
 
     /// <summary>
@@ -164,7 +164,7 @@ public sealed class MarkdownSkillParser
 
         if (!ValidTypes.Contains(type))
             throw new SkillParseException(
-                $"Invalid type: {type}. Valid types: action, tool, skill, chat");
+                $"Invalid type: {type}. Valid types: action, tool, skill, chat, memory, policy");
 
         if (!Version.TryParse(version, out var schemaVersion))
             throw new SkillParseException(

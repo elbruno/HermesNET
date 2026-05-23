@@ -72,9 +72,9 @@ public class OllamaClient : IChatClient
         using var reader = new System.IO.StreamReader(stream);
         var opts = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-        while (!reader.EndOfStream && !cancellationToken.IsCancellationRequested)
+        string? line;
+        while ((line = await reader.ReadLineAsync(cancellationToken)) != null)
         {
-            var line = await reader.ReadLineAsync(cancellationToken);
             if (string.IsNullOrWhiteSpace(line)) continue;
 
             OllamaStreamChunk? chunk;

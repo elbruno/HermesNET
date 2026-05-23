@@ -1,0 +1,568 @@
+openapi: 3.0.1
+info:
+  title: Hermes REST API
+  description: 'Local AI assistant REST API — chat, sessions, profiles, and memory.'
+  version: v1
+paths:
+  /api/chat:
+    post:
+      tags:
+        - Chat
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/api/profiles/{profileId}/memory':
+    get:
+      tags:
+        - Memory
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/MemoryContext'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemoryContext'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MemoryContext'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/api/profiles/{profileId}/user-profile':
+    get:
+      tags:
+        - Memory
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/UserProfileData'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileData'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileData'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/profiles:
+    get:
+      tags:
+        - Profiles
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+    post:
+      tags:
+        - Profiles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProfileRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateProfileRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateProfileRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/api/profiles/{id}':
+    get:
+      tags:
+        - Profiles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Profiles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfileRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Profiles
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/sessions:
+    get:
+      tags:
+        - Sessions
+      parameters:
+        - name: profileId
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSession'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSession'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProfileSession'
+    post:
+      tags:
+        - Sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateSessionRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProfileSession'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSession'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSession'
+        '400':
+          description: Bad Request
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  '/api/sessions/{id}':
+    get:
+      tags:
+        - Sessions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ProfileSession'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSession'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ProfileSession'
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Sessions
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '404':
+          description: Not Found
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+components:
+  schemas:
+    ChatRequest:
+      required:
+        - message
+        - profileId
+        - sessionId
+      type: object
+      properties:
+        message:
+          minLength: 1
+          type: string
+        profileId:
+          minLength: 1
+          type: string
+        sessionId:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    CreateProfileRequest:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateSessionRequest:
+      required:
+        - name
+        - profileId
+      type: object
+      properties:
+        name:
+          minLength: 1
+          type: string
+        profileId:
+          minLength: 1
+          type: string
+      additionalProperties: false
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          nullable: true
+        details:
+          type: string
+          nullable: true
+      additionalProperties: false
+    MemoryContext:
+      type: object
+      properties:
+        profileId:
+          type: string
+          nullable: true
+        content:
+          type: string
+          nullable: true
+        format:
+          type: string
+          nullable: true
+        version:
+          type: integer
+          format: int32
+        updatedAt:
+          type: string
+          format: date-time
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
+    Profile:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      additionalProperties: false
+    ProfileSession:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        profileId:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        lastAccessed:
+          type: string
+          format: date-time
+        metadata:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UpdateProfileRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+    UserProfileData:
+      type: object
+      properties:
+        profileId:
+          type: string
+          nullable: true
+        data:
+          type: string
+          nullable: true
+        schemaVersion:
+          type: integer
+          format: int32
+        updatedAt:
+          type: string
+          format: date-time
+        isEmpty:
+          type: boolean
+          readOnly: true
+      additionalProperties: false

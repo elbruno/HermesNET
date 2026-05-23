@@ -27,6 +27,7 @@ services.AddSingleton<IProfileService>(_ => new ProfileService(connectionString)
 services.AddSingleton<ISessionService>(sp =>
     new SessionService(connectionString, sp.GetRequiredService<IProfileService>()));
 services.AddSingleton<ISkillRegistry, SkillRegistry>();
+services.AddSingleton<SkillRegistryBootstrapper>();
 services.AddSingleton<MemoryStore>(_ => new MemoryStore(connectionString));
 services.AddSingleton<IMemoryService>(sp => sp.GetRequiredService<MemoryStore>());
 services.AddSingleton<CuratedMemoryLoader>(sp =>
@@ -50,6 +51,10 @@ await sessionService.InitializeAsync();
 var memoryStore = serviceProvider.GetRequiredService<MemoryStore>();
 await memoryStore.InitializeAsync();
 
+// Bootstrap skill registry from config/skills/ directory
+var skillBootstrapper = serviceProvider.GetRequiredService<SkillRegistryBootstrapper>();
+await skillBootstrapper.BootstrapAsync();
+
 // Build CLI root command
 var root = new RootCommand("Hermes — local AI runtime CLI");
 root.Add(
@@ -66,5 +71,3 @@ root.Add(SkillsCommand.Build(serviceProvider.GetRequiredService<ISkillRegistry>(
 
 var parseResult = root.Parse(args, new ParserConfiguration());
 return await parseResult.InvokeAsync();
-
-

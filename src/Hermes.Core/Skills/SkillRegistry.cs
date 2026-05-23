@@ -35,6 +35,27 @@ public sealed class SkillRegistry : ISkillRegistry
     public IReadOnlyList<string> LoadWarnings => _warnings.AsReadOnly();
 
     /// <inheritdoc/>
+    public Task RegisterSkillAsync(SkillDescriptor skillDefinition)
+    {
+        var skillId = skillDefinition.Id ?? skillDefinition.Name;
+
+        if (_skills.ContainsKey(skillId))
+            throw new DuplicateSkillException(skillId);
+
+        if (skillDefinition.SchemaVersion is not null &&
+            skillDefinition.SchemaVersion.Major != SupportedSchemaMajor)
+        {
+            _warnings.Add(
+                $"Skill '{skillId}' has unexpected schema version " +
+                $"{skillDefinition.SchemaVersion} (expected major {SupportedSchemaMajor}). " +
+                "Registered with warning.");
+        }
+
+        _skills[skillId] = skillDefinition;
+        return Task.CompletedTask;
+    }
+
+    /// <inheritdoc/>
     public Task<SkillDescriptor> GetSkillAsync(string skillId)
     {
         if (_skills.TryGetValue(skillId, out var skill))
@@ -82,6 +103,18 @@ public sealed class SkillRegistry : ISkillRegistry
         return errors.Count == 0 && warnings.Count == 0
             ? Task.FromResult(SkillValidationResult.Success)
             : Task.FromResult(new SkillValidationResult(errors, warnings));
+    }
+
+    /// <inheritdoc/>
+    public Task<IReadOnlyDictionary<string, string>> GetSkillMetadataAsync(string skillId)
+    {
+        if (!_skills.TryGetValue(skillId, out var skill))
+            throw new KeyNotFoundException($"Skill '{skillId}' not found in registry.");
+
+        var metadata = skill.Metadata
+            ?? (IReadOnlyDictionary<string, string>)new Dictionary<string, string>();
+
+        return Task.FromResult(metadata);
     }
 
     /// <inheritdoc/>

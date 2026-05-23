@@ -1,16 +1,16 @@
 # M1 OTel Baseline Latency Measurement
 
-**Date:** 2026-05-23 01:08:40Z
+**Date:** 2026-05-23 02:57:00Z
 **Iterations:** 10
 **Provider:** Ollama (Local)
 **OTel Status:** ENABLED (Console Exporter)
 
 ## Results
-- P95 Turn Latency: 48ms
-- Min Latency: 26ms
-- Max Latency: 48ms
-- Average Latency: 37.50ms
-- All Latencies: 26, 30, 31, 32, 32, 36, 46, 47, 47, 48ms
+- P95 Turn Latency: 51ms
+- Min Latency: 30ms
+- Max Latency: 51ms
+- Average Latency: 40.30ms
+- All Latencies: 30, 30, 31, 36, 41, 45, 46, 46, 47, 51ms
 
 ## Measurement Definition
 **Turn Latency = User CLI input → Agent response returned (excluding SQLite persist)**

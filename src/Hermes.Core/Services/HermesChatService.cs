@@ -1,12 +1,19 @@
+using System.Runtime.CompilerServices;
+
 namespace Hermes.Core.Services;
 
 /// <summary>
-/// Hermes abstraction for chat clients - allows for custom implementations
-/// while abstracting away the details of the underlying provider.
+/// Hermes abstraction for chat clients — allows custom implementations
+/// while abstracting away provider details.
 /// </summary>
 public interface IChatClient
 {
     ValueTask<string> CompleteAsync(IList<string> messages, CancellationToken cancellationToken = default);
+
+    /// <summary>Streams tokens as they arrive from the provider.</summary>
+    IAsyncEnumerable<string> StreamAsync(IList<string> messages, CancellationToken cancellationToken = default);
+
+    void Dispose();
 }
 
 public class HermesChatService : IHermesChatService
@@ -23,5 +30,16 @@ public class HermesChatService : IHermesChatService
         var messages = new List<string> { message };
         var response = await _chatClient.CompleteAsync(messages, cancellationToken);
         return response ?? string.Empty;
+    }
+
+    public async IAsyncEnumerable<string> StreamChatAsync(
+        string message,
+        string profileId,
+        string sessionId,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        var messages = new List<string> { message };
+        await foreach (var token in _chatClient.StreamAsync(messages, cancellationToken))
+            yield return token;
     }
 }

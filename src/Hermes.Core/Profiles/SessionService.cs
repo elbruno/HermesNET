@@ -154,7 +154,7 @@ public sealed class SessionService : ISessionService, IDisposable
         // Enforce cross-profile isolation at the service level.
         var currentProfile = await _profileService.GetCurrentProfileAsync(cancellationToken);
         if (currentProfile is not null && session.ProfileId != currentProfile.Id)
-            throw new InvalidOperationException(
+            throw new UnauthorizedAccessException(
                 $"Session '{id}' belongs to profile '{session.ProfileId}', not the current profile '{currentProfile.Id}'.");
 
         // Atomic switch + update last_accessed.
@@ -221,6 +221,54 @@ public sealed class SessionService : ISessionService, IDisposable
             txn.Rollback();
             throw;
         }
+    }
+
+    public async Task UpdateSessionAsync(
+        string id,
+        string name,
+        CancellationToken cancellationToken = default)
+    {
+        EnsureInitialized();
+
+        using var cmd = _connection.CreateCommand();
+        cmd.CommandText = """
+            UPDATE ProfileSessions
+            SET Name = @name, LastAccessed = @lastAccessed
+            WHERE Id = @id;
+            """;
+        cmd.Parameters.AddWithValue("@name", name);
+        cmd.Parameters.AddWithValue("@lastAccessed", DateTimeOffset.UtcNow.ToString("O"));
+        cmd.Parameters.AddWithValue("@id", id);
+
+        var affected = await cmd.ExecuteNonQueryAsync(cancellationToken);
+        if (affected == 0)
+            throw new KeyNotFoundException($"Session '{id}' not found.");
+    }
+
+    public async IAsyncEnumerable<ProfileSession> GetSessionsByProfileAsync(
+        string profileId,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        await foreach (var s in ListSessionsByProfileAsync(profileId, cancellationToken))
+            yield return s;
+    }
+
+    public async IAsyncEnumerable<ProfileSession> ListSessionsAsync(
+        string? profileId = null,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default)
+    {
+        EnsureInitialized();
+
+        if (profileId is null)
+        {
+            var current = await _profileService.GetCurrentProfileAsync(cancellationToken)
+                ?? throw new InvalidOperationException(
+                    "No active profile. Switch to a profile before listing sessions without an explicit profileId.");
+            profileId = current.Id;
+        }
+
+        await foreach (var s in ListSessionsByProfileAsync(profileId, cancellationToken))
+            yield return s;
     }
 
     public void Dispose() => _connection.Dispose();

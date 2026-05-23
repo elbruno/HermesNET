@@ -1,5 +1,6 @@
 global using System;
 global using System.Collections.Generic;
+global using System.Net.Http.Json;
 global using System.Threading.Tasks;
 global using FluentAssertions;
 global using Hermes.Core.Session;
