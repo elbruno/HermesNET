@@ -31,7 +31,8 @@ jobs:
       - name: Authenticate to NuGet
         uses: NuGet/login@v1
         with:
-          nuget-api-endpoint: https://api.nuget.org/v3/index.json
+          token-service-url: https://nuget.org/
+          audience: api://nuget.org
 
       - name: Restore packages
         run: dotnet restore
