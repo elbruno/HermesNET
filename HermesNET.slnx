@@ -3,11 +3,13 @@
     <Project Path="src/Hermes.Cli/Hermes.Cli.csproj" />
     <Project Path="src/Hermes.Core/Hermes.Core.csproj" />
     <Project Path="src/Hermes.Host/Hermes.Host.csproj" />
+    <Project Path="src/Hermes.Adapters/Hermes.Adapters.csproj" />
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Hermes.Core.Tests/Hermes.Core.Tests.csproj" />
     <Project Path="tests/Hermes.Benchmarks/Hermes.Benchmarks.csproj" />
     <Project Path="tests/Hermes.LoadTests/Hermes.LoadTests.csproj" />
     <Project Path="tests/Hermes.Integration.Tests/Hermes.Integration.Tests.csproj" />
+    <Project Path="tests/Hermes.Adapters.Tests/Hermes.Adapters.Tests.csproj" />
   </Folder>
 </Solution>

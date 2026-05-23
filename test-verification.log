@@ -1,0 +1,18 @@
+Test run for D:\elbruno\HermesNET\tests\Hermes.Benchmarks\bin\Debug\net10.0\Hermes.Benchmarks.dll (.NETCoreApp,Version=v10.0)
+Test run for D:\elbruno\HermesNET\tests\Hermes.LoadTests\bin\Debug\net10.0\Hermes.LoadTests.dll (.NETCoreApp,Version=v10.0)
+Test run for D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Integration.Tests.dll (.NETCoreApp,Version=v10.0)
+Test run for D:\elbruno\HermesNET\tests\Hermes.Core.Tests\bin\Debug\net10.0\Hermes.Core.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:00.15]     Hermes.Core.Tests.Profiles.ProfileIsolationTests.SwitchingProfile_DoesNotAffectOtherProfilesCurrentSession [SKIP]
+  Skipped Hermes.Core.Tests.Profiles.ProfileIsolationTests.SwitchingProfile_DoesNotAffectOtherProfilesCurrentSession [1 ms]
+
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 3 ms - Hermes.Benchmarks.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 71 ms - Hermes.LoadTests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:   232, Skipped:     1, Total:   233, Duration: 497 ms - Hermes.Core.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:    28, Skipped:     0, Total:    28, Duration: 625 ms - Hermes.Integration.Tests.dll (net10.0)

@@ -17,7 +17,7 @@ namespace Hermes.Core.Skills;
 ///   <item>Skills with schema major version ≠ 1 are loaded but produce a <see cref="LoadWarnings"/> entry.</item>
 /// </list>
 /// </summary>
-public sealed class SkillRegistry : ISkillRegistry
+public sealed class SkillRegistry : ISkillRegistry, ISkillProvider
 {
     private const int SupportedSchemaMajor = 1;
 
@@ -147,6 +147,78 @@ public sealed class SkillRegistry : ISkillRegistry
 
         return Task.FromResult(metadata);
     }
+
+    // ── ISkillProvider ──────────────────────────────────────────────────────────
+
+    /// <inheritdoc/>
+    public Task<IReadOnlyList<string>> DiscoverAsync(
+        string directory,
+        CancellationToken cancellationToken = default)
+    {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.DiscoverAsync");
+        span?.SetTag("operation", "discover");
+        span?.SetTag("directory", directory);
+
+        if (!Directory.Exists(directory))
+            throw new DirectoryNotFoundException($"Skills directory not found: {directory}");
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        IReadOnlyList<string> files = Directory.GetFiles(directory, "*.md", SearchOption.TopDirectoryOnly);
+        span?.SetTag("skill.discovered", files.Count);
+
+        return Task.FromResult(files);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ISkillDefinition> LoadAsync(
+        string skillPath,
+        CancellationToken cancellationToken = default)
+    {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.LoadAsync");
+        span?.SetTag("operation", "load");
+        span?.SetTag("skill.path", skillPath);
+
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var content    = await File.ReadAllTextAsync(skillPath, Encoding.UTF8, cancellationToken)
+                                   .ConfigureAwait(false);
+        var descriptor = _parser.Parse(content);
+
+        span?.SetTag("skill.id", descriptor.Id ?? descriptor.Name);
+
+        return descriptor;
+    }
+
+    /// <inheritdoc/>
+    public Task<SkillValidationResult> ValidateAsync(ISkillDefinition skill)
+    {
+        using var span = TelemetryProvider.GetActivitySource().StartActivity("SkillRegistry.ValidateAsync(ISkillDefinition)");
+        span?.SetTag("operation", "validate");
+        span?.SetTag("skill.id", skill.Id ?? skill.Name);
+
+        var errors   = new List<string>();
+        var warnings = new List<string>();
+
+        if (skill.SchemaVersion is null)
+        {
+            errors.Add("Missing schema version.");
+        }
+        else if (skill.SchemaVersion.Major != SupportedSchemaMajor)
+        {
+            errors.Add(
+                $"Unsupported schema version {skill.SchemaVersion}. " +
+                $"Expected major version {SupportedSchemaMajor}.");
+        }
+
+        span?.SetTag("validation.passed", errors.Count == 0);
+
+        return errors.Count == 0 && warnings.Count == 0
+            ? Task.FromResult(SkillValidationResult.Success)
+            : Task.FromResult(new SkillValidationResult(errors, warnings));
+    }
+
+    // ── ISkillRegistry.LoadFromDirectoryAsync ──────────────────────────────────
 
     /// <inheritdoc/>
     public async Task LoadFromDirectoryAsync(string skillsDirectory)

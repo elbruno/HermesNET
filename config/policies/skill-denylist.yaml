@@ -1,0 +1,27 @@
+# Hermes Policy Engine — Skill Denylist
+# Format: flat YAML with three sections.
+# Each section is a YAML list (- value).
+#
+# denied_ids:   Exact skill IDs to deny (case-insensitive)
+# denied_tags:  Skills tagged with any of these are denied
+# denied_authors: Skills authored by any of these are denied
+
+denied_ids:
+  - system-shell-execute
+  - network-fetch-raw
+  - file-delete-all
+  - exec-arbitrary-code
+  - bypass-policy-gate
+  - drop-database
+  - privilege-escalate
+
+denied_tags:
+  - dangerous
+  - privileged
+  - unsafe
+  - experimental-unsafe
+  - destructive
+
+denied_authors:
+  - untrusted-author
+  - anonymous-external

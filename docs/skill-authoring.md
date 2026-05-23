@@ -208,3 +208,79 @@ hermes skill show math/celsius-to-fahrenheit
 ```
 
 Done! 🎉
+
+---
+
+## M3 T33 — Skill Abstraction Model
+
+> **For contributors and M4 MAF integration authors.**
+
+### Core Interfaces
+
+HermesNET M3 introduces two abstractions to decouple skill data from skill
+loading, enabling the M4 MAF `IToolSet` swap with minimal code churn.
+
+#### `ISkillDefinition`
+
+Represents the *data contract* for a loaded skill. `SkillDescriptor` (the
+concrete parse result) implements this interface:
+
+| Property | Type | Notes |
+|---|---|---|
+| `Name` | `string` | Display name — always non-null |
+| `Type` | `string` | action / tool / skill / chat / memory / policy |
+| `Description` | `string` | Human-readable description |
+| `Id` | `string?` | Unique ID — falls back to `Name` |
+| `SchemaVersion` | `Version?` | Parsed from `**Version:**` header |
+| `Category` | `string?` | Organisational grouping |
+| `Metadata` | `IReadOnlyDictionary<string,string>?` | Key-value pairs from `## Metadata` section |
+| `Content` | `string?` | Raw body content of the skill file |
+| `Inputs` | `IReadOnlyDictionary<string,string>?` | Structured inputs (null if not declared) |
+| `Outputs` | `IReadOnlyDictionary<string,string>?` | Structured outputs (null if not declared) |
+
+#### `ISkillProvider`
+
+Abstracts *discovery*, *loading*, and *validation* from a source (filesystem,
+MAF `IToolSet`, remote registry, …):
+
+```csharp
+public interface ISkillProvider
+{
+    // Returns .md file paths from a directory (M3 default)
+    Task<IReadOnlyList<string>> DiscoverAsync(string directory, CancellationToken ct = default);
+
+    // Parses a single skill from a file path
+    Task<ISkillDefinition> LoadAsync(string skillPath, CancellationToken ct = default);
+
+    // Validates a definition in isolation (no registry lookup)
+    Task<SkillValidationResult> ValidateAsync(ISkillDefinition skill);
+}
+```
+
+`SkillRegistry` implements both `ISkillRegistry` and `ISkillProvider`.
+
+### Injecting a Custom Provider
+
+`SkillRegistryBootstrapper` accepts an optional `ISkillProvider`:
+
+```csharp
+// Default (file-backed)
+var bootstrapper = new SkillRegistryBootstrapper(registry, skillsDirectory: "config/skills");
+
+// Custom provider (e.g., MAF IToolSet adapter in M4)
+var bootstrapper = new SkillRegistryBootstrapper(registry, myMafProvider, "config/skills");
+```
+
+When a provider is supplied, the bootstrapper calls
+`DiscoverAsync` → `LoadAsync` for each path, then registers each result.
+Without a provider, it falls back to `ISkillRegistry.LoadFromDirectoryAsync`.
+
+### M4 Migration Path
+
+To integrate MAF `IToolSet` in M4:
+
+1. Implement `ISkillProvider` backed by `IToolSet`
+2. Return your own `ISkillDefinition` implementation from `LoadAsync`
+3. Update `ISkillRegistry.RegisterSkillAsync` to accept `ISkillDefinition`
+   (the only breaking surface — clearly bounded by the M4 ticket)
+4. Inject your provider into `SkillRegistryBootstrapper`

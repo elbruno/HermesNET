@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hermes.Benchmarks")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63ddd0055ef0250e8f26268db8c4b0cb6d917eac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+14b11fa3f530796d6bdadc5c038f69ff3f091f01")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hermes.Benchmarks")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hermes.Benchmarks")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -2384,10 +2384,10 @@
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "2.0.0",
     "restore": {
       "projectUniqueName": "D:\\elbruno\\HermesNET\\src\\Hermes.Cli\\Hermes.Cli.csproj",
-      "projectName": "Hermes.Cli",
+      "projectName": "hermesnet",
       "projectPath": "D:\\elbruno\\HermesNET\\src\\Hermes.Cli\\Hermes.Cli.csproj",
       "packagesPath": "C:\\Users\\brunocapuano\\.nuget\\packages\\",
       "outputPath": "D:\\elbruno\\HermesNET\\src\\Hermes.Cli\\obj\\",

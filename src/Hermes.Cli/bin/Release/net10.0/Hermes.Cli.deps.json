@@ -6,7 +6,7 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v10.0": {
-      "Hermes.Cli/1.0.0": {
+      "Hermes.Cli/2.0.0": {
         "dependencies": {
           "Hermes.Core": "1.0.0",
           "Hermes.Host": "1.0.0",
@@ -422,7 +422,7 @@
     }
   },
   "libraries": {
-    "Hermes.Cli/1.0.0": {
+    "Hermes.Cli/2.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

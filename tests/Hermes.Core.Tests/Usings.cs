@@ -9,5 +9,6 @@ global using Hermes.Core.Profiles;    // T13 — Profile and session management
 global using Hermes.Core.Skills;       // T9 — YAML skill parser
 global using Hermes.Core.Telemetry;
 global using Hermes.Core.Memory;      // T17 — Curated memory model (M2)
+global using Hermes.Core.Policy;      // T36 — Policy engine (M3C)
 global using Xunit;
 global using Xunit.Abstractions;

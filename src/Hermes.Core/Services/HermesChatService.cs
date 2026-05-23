@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using Hermes.Core.Policy;
 
 namespace Hermes.Core.Services;
 
@@ -19,10 +20,12 @@ public interface IChatClient
 public class HermesChatService : IHermesChatService
 {
     private readonly IChatClient _chatClient;
+    private readonly IPolicyEngine? _policyEngine;
 
-    public HermesChatService(IChatClient chatClient)
+    public HermesChatService(IChatClient chatClient, IPolicyEngine? policyEngine = null)
     {
-        _chatClient = chatClient;
+        _chatClient    = chatClient;
+        _policyEngine  = policyEngine;
     }
 
     public async ValueTask<string> ChatAsync(string message, CancellationToken cancellationToken = default)
@@ -38,6 +41,14 @@ public class HermesChatService : IHermesChatService
         string sessionId,
         [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
+        // M3C: enforce rate limit before processing the request
+        if (_policyEngine is not null)
+        {
+            var rateLimitResult = _policyEngine.CheckRateLimit(profileId, sessionId);
+            if (rateLimitResult.Verdict == PolicyVerdict.Deny)
+                throw new PolicyViolationException(rateLimitResult);
+        }
+
         var messages = new List<string> { message };
         await foreach (var token in _chatClient.StreamAsync(messages, cancellationToken))
             yield return token;
