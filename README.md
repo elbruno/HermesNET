@@ -11,261 +11,108 @@
 
 A comprehensive runtime for building intelligent agent applications with session persistence, observability, and provider abstraction built on .NET 10.
 
-## Installation
+---
 
-### As a Global .NET Tool
+## Quick Start
+
+Get running in three steps:
+
+### 1. Install the .NET tool
 
 ```bash
 dotnet tool install -g ElBruno.Hermes.Tool
 ```
 
-Then use:
+### 2. Configure your provider
 
 ```bash
-hermesnet chat "solve 2+2"
-hermesnet profile list
-hermesnet session create my-session
 hermesnet config
-hermesnet doctor
 ```
 
-### Upgrade to latest
+This creates a config file at:
+- **Windows:** `%APPDATA%\Hermes\appsettings.json`
+- **macOS/Linux:** `~/.hermes/appsettings.json`
+
+### 3. Run a sample prompt
 
 ```bash
-dotnet tool update -g ElBruno.Hermes.Tool
+hermesnet chat --profile default --message "Hello! What is 2+2?"
 ```
 
-## Project Structure
+> **Note:** First run creates a default profile automatically. See [Quick Start Guide](./docs/quickstart.md) for more examples and workflows.
 
-### Core Projects
+---
 
-- **`src/Hermes.Core/`** — Core runtime library
-  - Session management and persistence
-  - Chat service abstractions
-  - Provider interface definitions
-  - Telemetry and observability
-  - Skill parsing and validation
+## Documentation
 
-- **`src/Hermes.Host/`** — Application host and dependency injection
-  - Service registration and configuration
-  - Provider factory implementation (IChatClient)
-  - Application startup and lifecycle management
-  - Settings management (appsettings.json)
+### Getting Started
+- **[Quick Start Guide](./docs/quickstart.md)** — Detailed setup and first commands
+- **[CLI User Guide](./docs/cli-guide.md)** — Complete workflows and commands
 
-- **`src/Hermes.Cli/`** — Command-line interface
-  - System.CommandLine-based CLI
-  - Chat command entry point
-  - Session management commands
+### Reference
+- **[CLI Reference](./docs/cli-reference.md)** — Exhaustive command documentation
+- **[Troubleshooting](./docs/troubleshooting.md)** — Common issues and solutions
+
+### Development & Architecture
+- **[Skill Authoring](./docs/skill-authoring.md)** — Build custom skills
+- **[API Reference](./docs/api-reference.md)** — REST API endpoints
+- **[User Guide](./docs/user-guide.md)** — Core concepts (profiles, sessions, memory)
+
+### Release & Publishing
+- **[Release Notes v2.0.1](./docs/release-notes-v2.0.1.md)** — Latest features
+- **[Publishing Guide](./docs/publishing.md)** — Release & NuGet publishing
+
+### Architecture & Testing
+- **Architecture Decisions** — See `.squad/decisions.md`
+- **Testing & Quality** — See `docs/testing/` folder
+- **Benchmarks** — See `docs/benchmarks/` folder
+- **M1 Baseline** — See `M1-BASELINE.txt` (telemetry baseline measurements)
+
+---
 
 ## Prerequisites
 
 - **.NET 10.0** or later
 - **Visual Studio 2025** or VS Code with C# DevKit (recommended)
-- **Ollama** (optional, for local provider testing)
+- An LLM provider:
+  - **Local:** [Ollama](https://ollama.ai/) (free, runs locally)
+  - **Cloud:** OpenAI or compatible API
 
-## Building
+---
 
-### Restore packages
+## Development
+
+### Building from source
 
 ```bash
 dotnet restore
-```
-
-### Build the solution
-
-```bash
 dotnet build
 ```
 
-### Build in Release configuration
-
-```bash
-dotnet build --configuration Release
-```
-
-## Running Tests
+### Running tests
 
 ```bash
 dotnet test
 ```
 
-### Run tests with coverage
+See [Building & Testing Docs](./docs/cli-guide.md#building) for detailed build instructions.
 
-```bash
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-```
+---
 
-## Architecture
+## Project Overview
 
-### Solution-Wide Configuration
+### Core Projects
 
-- **`Directory.Build.props`** — Shared build settings
-  - C# 13 language version
-  - Nullable reference types enabled
-  - Implicit usings enabled
-  - Warnings treated as errors for code quality
+- **`src/Hermes.Core/`** — Core runtime library (session, chat abstractions, telemetry)
+- **`src/Hermes.Host/`** — Application host (DI, provider factory, configuration)
+- **`src/Hermes.Cli/`** — Command-line interface (System.CommandLine-based)
 
-- **`Directory.Packages.props`** — Centralized NuGet versioning
-  - Single source of truth for all package versions
-  - Prevents version conflicts across projects
+### Architecture Highlights
 
-- **`global.json`** — .NET SDK version constraint
-  - Enforces .NET 10.0 or later
-
-## Dependencies
-
-### Core Packages
-
-- **Microsoft.Extensions.AI** — IChatClient abstraction for provider integration
-- **Microsoft.Extensions.DependencyInjection** — Service container
-- **Microsoft.Extensions.Configuration** — Settings management
-- **Microsoft.EntityFrameworkCore** — Data persistence (EF Core)
-- **System.CommandLine** — CLI framework
-- **OpenTelemetry** — Observability baseline
-
-### Testing
-
-- **xUnit** — Testing framework
-- **Coverlet.Collector** — Code coverage
-- **Microsoft.NET.Test.Sdk** — Test runner
-
-## Quick Start
-
-### Running the CLI
-
-```bash
-# Start Ollama locally (if using local provider)
-ollama serve
-
-# In another terminal, run the HermesNET CLI
-dotnet run --project src/Hermes.Cli -- chat "What is 2+2?"
-```
-
-**Configuration:** Run `hermesnet config` to create a user config file in:
-- Windows: `%APPDATA%\Hermes\appsettings.json`
-- macOS/Linux: `~/.hermes/appsettings.json`
-
-The CLI still ships default settings in `src/Hermes.Cli/appsettings.json`:
-```json
-{
-  "Provider": "Ollama",  // Switch to "OpenAI" for cloud provider
-  "Ollama": {
-    "BaseUrl": "http://localhost:11434",
-    "Model": "llama2"
-  }
-}
-```
-
-### Build from Visual Studio
-
-1. Open `HermesNET.slnx` in Visual Studio 2025
-2. Build Solution (Ctrl+Shift+B)
-3. All three projects compile without warnings
-
-## Documentation
-
-### Release Information
-- **[Release Notes v2.0.1](./docs/release-notes-v2.0.1.md)** — CLI config/doctor commands and Spectre.Console UX
-- **[Publishing Guide](./docs/publishing.md)** — GitHub Release + NuGet trusted publishing (no API key)
-
-### Getting Started
-- **[Quick Start Guide](./docs/quickstart.md)** — 5-minute setup
-- **[User Guide](./docs/user-guide.md)** — Core concepts (profiles, sessions, memory)
-- **[CLI Reference](./docs/cli-reference.md)** — Complete command reference
-
-### Development
-- **[Skill Authoring](./docs/skill-authoring.md)** — Write custom skills
-- **[API Reference](./docs/api-reference.md)** — REST API endpoints
-- **[Troubleshooting](./docs/troubleshooting.md)** — Common issues and solutions
-
-### Architecture & Quality
-- **Architecture Decisions** — See `.squad/decisions.md`
-- **Testing & Quality Gates** — See `docs/testing/`
-  - [Test Framework Specification](./docs/testing/TEST-FRAMEWORK.md)
-  - [M1 Quality Gates](./docs/testing/M1-QUALITY-GATES.md)
-  - [Test Conventions](./docs/testing/TEST-CONVENTIONS.md)
-  - [CLI Smoke Test](./docs/testing/CLI-SMOKE-TEST.md)
-  - [M1 Task Acceptance Criteria](./docs/testing/M1-TASK-CRITERIA.md)
-- **Benchmarks** — See `docs/benchmarks/`
-- **M1 Baseline** — See `M1-BASELINE.txt` (OTel baseline measurements)
-
-## OpenTelemetry Instrumentation
-
-Hermes uses **OpenTelemetry** for distributed tracing and observability from Day 1. This enables early detection of performance regressions and overhead measurements.
-
-### Architecture
-
-The instrumentation strategy centers around three span types:
-
-1. **Turn Span** (`hermes.chat.turn`) — Root span wrapping the entire user request
-   - Tags: `turn.id`, `message.length`, `response.length`
-   - Measures: End-to-end latency (user input → response returned)
-   
-2. **Provider Call Span** (`hermes.provider.call`) — Child span for ChatClient calls
-   - Tags: `provider.name`, `provider.latency_ms`
-   - Measures: Provider-specific latency (isolated from CLI overhead)
-   
-3. **Session Persist Span** (`hermes.session.persist`) — Async background span
-   - Tags: `session.id`
-   - Note: Not included in turn latency measurement (async, background operation)
-
-### Usage
-
-Instrumentation is accessed via `Hermes.Core.Telemetry.TelemetryProvider`:
-
-```csharp
-using Hermes.Core.Telemetry;
-
-// Start a turn span
-using (var turn = TelemetryProvider.StartTurnSpan(turnId))
-{
-    TelemetryProvider.SetMessageLength(turn, message.Length);
-    
-    // Start a provider call span
-    using (var provider = TelemetryProvider.StartProviderCallSpan("Ollama"))
-    {
-        var response = await chatClient.CompleteAsync(messages);
-        TelemetryProvider.SetProviderLatency(provider, elapsedMs);
-    }
-    
-    TelemetryProvider.SetResponseLength(turn, response.Length);
-}
-```
-
-### Configuration
-
-OpenTelemetry is initialized in `Hermes.Cli/Program.cs`:
-
-```csharp
-var tracerProvider = Sdk.CreateTracerProviderBuilder()
-    .AddSource("Hermes.Core")
-    .AddConsoleExporter()  // M1: console logging for development
-    .Build();
-```
-
-For production, replace `AddConsoleExporter()` with appropriate exporters (OTLP, Jaeger, etc.).
-
-### Baseline Measurement
-
-The M1 baseline establishes a performance reference point with OTel fully enabled:
-
-- **P95 Turn Latency:** 55ms (local Ollama, console exporter active)
-- **Target:** < 100ms with OTel ON
-- **Results:** Committed to `M1-BASELINE.txt`
-
-This baseline is the reference point for M2's "no >20% OTel overhead" regression gate.
-
-## CLI Tool
-
-HermesNET is available as a global .NET tool:
-
-```bash
-dotnet tool install -g hermesnet
-hermes profile create myprofile
-hermes chat --profile myprofile --message "Hello!"
-```
-
-**Get started:** See [Quick Start Guide](docs/quickstart.md) or the [Full CLI User Guide](docs/cli-guide.md)
+- **Session Persistence** — Built-in conversation and profile storage
+- **Provider Abstraction** — Pluggable LLM providers (Ollama, OpenAI, custom)
+- **OpenTelemetry** — Distributed tracing and observability from day one
+- **C# 13** — Modern language features with nullable safety
 
 ---
 
@@ -275,6 +122,8 @@ hermes chat --profile myprofile --message "Hello!"
 - Use C# 13 features freely (latest language version)
 - Maintain nullable reference type safety
 - Cover critical paths with xUnit tests
+
+---
 
 ## License
 

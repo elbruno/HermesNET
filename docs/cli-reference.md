@@ -4,6 +4,19 @@ Exhaustive reference for all `hermes` CLI commands, flags, and exit codes.
 
 For installation instructions and workflows, see [cli-guide.md](./cli-guide.md).
 
+## Table of Contents
+
+- [Global Flags](#global-flags)
+- [Commands](#commands)
+  - [`hermes profile`](#hermes-profile)
+  - [`hermes session`](#hermes-session)
+  - [`hermes skill`](#hermes-skill)
+  - [`hermes memory`](#hermes-memory)
+  - [`hermes tool`](#hermes-tool)
+  - [`hermes chat`](#hermes-chat)
+- [Exit Codes](#exit-codes)
+- [Quick Reference](#quick-reference)
+
 ---
 
 ## Global Flags
