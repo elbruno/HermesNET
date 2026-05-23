@@ -387,6 +387,31 @@ catch (KeyNotFoundException)
 
 ---
 
+### M3-001 — M3C Phase Gate: MAF Deferred to M3→M4 Boundary
+
+**Date:** 2026-05-22  
+**Authority:** Ripley  
+**Status:** ✅ DECIDED — MAF deferred to M3→M4 boundary, custom stack cleared for M3
+
+**Decision:** Defer Microsoft Agent Framework (MAF) agent scaffolding to the transition gate between M3 and M4. M3 proceeds with custom stack: `ISkillRegistry` + `IMemoryService` + custom policy engine (`PolicyEvaluator`).
+
+**Rationale:**
+- M3 scope (T33 skill abstraction, T34 adapter tests, T35 latency baseline) is independent of MAF implementation
+- R2 isolation proven in M2; M3 extends on proven layer without MAF dependency
+- Deferred MAF integration preserves M3 parallelization of T33–T35
+- M3→M4 gate: Ripley validates MAF compatibility, no breaking changes to abstraction contracts
+
+**Adapter Design + R2 Isolation:**
+- T33 output: `ISkillAdapter` interface + adapter registry provide decoupling for future MAF agent lifecycle
+- R2 isolation: Profile/session scoping in `IMemoryService` enforces hard isolation at DB layer; MAF inherits isolation automatically
+- Custom evaluator: `PolicyEvaluator` (T35) accepts memory context + user profile, returns filtered skill list for invocation
+
+**Go/No-Go for M3:** ✅ M3 proceeds without MAF dependency. R2 isolation proven. T33–T35 workstreams released.
+
+**Next Checkpoint:** M3→M4 boundary — MAF integration validation and custom stack MAF compatibility review.
+
+---
+
 ## Governance
 
 - All meaningful changes require team consensus

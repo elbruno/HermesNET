@@ -117,3 +117,18 @@ Team (Dallas, Parker, Ash, Lambert) identified 7 architectural blockers. Ripley 
 
 **Status:** ✅ Dallas unblocked to start T1 immediately (Day 1, 2026-05-23).
 
+---
+
+## M3C Phase Gate — 2026-05-22
+
+### M3C T32 Decision Locked
+
+**Decision:** Defer Microsoft Agent Framework (MAF) integration to M3→M4 boundary. M3 proceeds with custom stack (ISkillRegistry + IMemoryService + PolicyEvaluator).
+
+**Key Points:**
+- Adapter design + R2 isolation strategy documented in `.squad/decisions.md` (M3-001)
+- No blocking MAF dependency for M3 core work (T33 skill abstraction, T34 adapter tests, T35 latency baseline)
+- R2 isolation proven in M2; M3 extends on proven foundation with hard DB-layer profile/session scoping
+- M3→M4 boundary: Formal MAF integration review; validate custom stack MAF-compatibility (no breaking changes)
+- T33–T35 workstreams released for parallel execution without MAF blocker
+
