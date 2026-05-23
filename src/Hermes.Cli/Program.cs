@@ -8,10 +8,12 @@ using Hermes.Core.Session;
 using Hermes.Core.Profiles;
 using Hermes.Core.Skills;
 using Hermes.Cli.Commands;
+using Hermes.Cli.Configuration;
 
 var builder = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile(HermesCliConfigStore.GetDefaultConfigPath(), optional: true, reloadOnChange: true);
 
 var configuration = builder.Build();
 
@@ -68,6 +70,8 @@ root.Add(MemoryCommand.Build(
     serviceProvider.GetRequiredService<MemoryUpdateHandler>(),
     profileService));
 root.Add(SkillsCommand.Build(serviceProvider.GetRequiredService<ISkillRegistry>()));
+root.Add(ConfigCommand.Build(configuration, new HermesCliConfigStore()));
+root.Add(DoctorCommand.Build(configuration, new HermesCliConfigStore()));
 
 var parseResult = root.Parse(args, new ParserConfiguration());
 return await parseResult.InvokeAsync();
