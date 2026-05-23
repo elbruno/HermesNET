@@ -117,3 +117,9 @@ Awaiting clarity on whether provider audit work overlaps with R1 or is a separat
 
 **Status:** Ready for M2 provider integration. Provider path is secure, decoupled, and appropriately licensed.
 
+
+## Scribe Sync — 2026-05-23
+- Native credential-store storage for OpenAI:ApiKey is the approved path.
+- Data Protection-only secret storage was rejected; fail-closed migration is required.
+- Shared JSON defaults plus credential-backed secrets are now the canonical design.
+

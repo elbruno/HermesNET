@@ -48,3 +48,17 @@
 
 ### Previous Milestones (M1, Early M2)
 See `dallas/history-archive.md` for M1 completion summary, session store implementation, and provider wiring details.
+
+## Learnings
+
+- Centralized NuGet versioning lives in `Directory.Build.props`; update it before release tagging so `publish.yml` resolves the intended package version.
+- Trusted publishing is the release path for HermesNET NuGet packages: GitHub Release tag `v0.1.0` + `NuGet/login@v1` + `--skip-duplicate`.
+- Packable release outputs are `Hermes.Core`, `Hermes.Adapters`, and the `hermesnet` tool; `Hermes.Host` stays non-packable.
+- Key release docs: `README.md`, `docs/publishing.md`, `docs/release-notes-v0.1.0.md`.
+- Secure-at-rest config now lives in `src/Hermes.Core/Configuration/*` with `HermesCliConfigStore` delegating to the shared secret store and both `src/Hermes.Cli/Program.cs` and `src/Hermes.Host/Program.cs` reading `OpenAI:ApiKey` from the same key path.
+- `ConfigCommand` and `DoctorCommand` stay configuration-driven; tests cover secret masking, plaintext migration, and config overlay via `HermesSecretConfigurationSource`.
+## Scribe Sync — 2026-05-23
+- Secure-settings canonical decision merged: OS credential store for OpenAI:ApiKey, fail-closed migration, shared key path.
+- T14 and T17 risk/implementation notes were recorded in decisions.md.
+- v0.1.0 release decision logged for Hermes.Core, Hermes.Adapters, and hermesnet.
+
