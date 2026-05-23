@@ -44,9 +44,4 @@
     </None>
   </ItemGroup>
 
-  <!-- Include README in NuGet package -->
-  <ItemGroup>
-    <None Include="../../README.md" Pack="true" PackagePath="\"/>
-  </ItemGroup>
-
 </Project>
