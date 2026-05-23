@@ -30,7 +30,9 @@ jobs:
 
       - name: Authenticate to NuGet
         uses: NuGet/login@v1
+        id: nuget_login
         with:
+          user: ${{ github.repository_owner }}
           token-service-url: https://nuget.org/
           audience: api://nuget.org
 
@@ -75,7 +77,7 @@ jobs:
       - name: Push packages to NuGet
         run: |
           find artifacts -maxdepth 1 -name '*.nupkg' ! -name '*.snupkg' -print0 | while IFS= read -r -d '' package; do
-            dotnet nuget push "$package" --source https://api.nuget.org/v3/index.json --skip-duplicate
+            dotnet nuget push "$package" --api-key "${{ steps.nuget_login.outputs.NUGET_API_KEY }}" --source https://www.nuget.org/api/v2/package --skip-duplicate
           done
 
       - name: Upload packages
