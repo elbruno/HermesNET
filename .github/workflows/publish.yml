@@ -33,8 +33,6 @@ jobs:
         id: nuget_login
         with:
           user: ${{ github.repository_owner }}
-          token-service-url: https://nuget.org/
-          audience: api://nuget.org
 
       - name: Restore packages
         run: dotnet restore
