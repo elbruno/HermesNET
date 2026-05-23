@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hermes.Cli")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+63ddd0055ef0250e8f26268db8c4b0cb6d917eac")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7579c3615c61ad556f2ab8b7d384e4db1e4c8a0d")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hermes.Cli")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hermes.Cli")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

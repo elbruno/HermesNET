@@ -1,12 +1,5 @@
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\.msCoverageSourceRootsMapping_Hermes.Integration.Tests
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\CoverletSourceRootsMapping_Hermes.Integration.Tests
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.csproj.AssemblyReference.cache
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\MvcTestingAppManifest.json
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.GeneratedMSBuildEditorConfig.editorconfig
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.AssemblyInfoInputs.cache
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.AssemblyInfo.cs
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.csproj.CoreCompileInputs.cache
-D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.sourcelink.json
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\testhost.dll
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Host.deps.json
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Host.runtimeconfig.json
@@ -463,6 +456,13 @@ D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Cor
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Host.dll
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Core.pdb
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\bin\Debug\net10.0\Hermes.Host.pdb
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.csproj.AssemblyReference.cache
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\MvcTestingAppManifest.json
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.GeneratedMSBuildEditorConfig.editorconfig
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.AssemblyInfoInputs.cache
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.AssemblyInfo.cs
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.csproj.CoreCompileInputs.cache
+D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.sourcelink.json
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.I.CD62B44C.Up2Date
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\Hermes.Integration.Tests.dll
 D:\elbruno\HermesNET\tests\Hermes.Integration.Tests\obj\Debug\net10.0\refint\Hermes.Integration.Tests.dll
