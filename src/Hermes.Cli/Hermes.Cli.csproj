@@ -11,7 +11,7 @@
     <PublishRelease>true</PublishRelease>
     <!-- NuGet package metadata -->
     <PackageId>ElBruno.Hermes.Tool</PackageId>
-    <Version>2.0.1</Version>
+    <Version>2.0.2</Version>
     <Title>HermesNET</Title>
     <Authors>Bruno Capuano;Copilot</Authors>
     <Description>Hermes.NET: Distributed agent runtime with skills, tools, memory, and observability.</Description>

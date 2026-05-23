@@ -1,5 +1,6 @@
 using FluentAssertions;
 using Hermes.Cli.Configuration;
+using Hermes.Core.Configuration;
 using Microsoft.Extensions.Configuration;
 
 namespace Hermes.Core.Tests.Configuration;
@@ -9,25 +10,40 @@ public sealed class HermesCliConfigStoreTests
     [Fact]
     public async Task SaveAndLoadRoundTripsTheConfiguration()
     {
-        var directory = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"));
-        var store = new HermesCliConfigStore(Path.Combine(directory, "appsettings.json"));
-
-        var settings = new HermesCliSettings
+        var directory = Path.Combine(AppContext.BaseDirectory, "test-dirs", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
         {
-            Provider = HermesProviderNames.OpenAI,
-            OpenAI = new OpenAISettings
+            var secretStore = new FakeSecretStore();
+            var store = new HermesCliConfigStore(Path.Combine(directory, "appsettings.json"), secretStore);
+
+            var settings = new HermesCliSettings
             {
-                ApiKey = "test-key",
-                Model = "gpt-4.1"
-            }
-        };
+                Provider = HermesProviderNames.OpenAI,
+                OpenAI = new OpenAISettings
+                {
+                    ApiKey = "test-key",
+                    Model = "gpt-4.1"
+                }
+            };
 
-        await store.SaveAsync(settings);
-        var loaded = await store.LoadAsync();
+            await store.SaveAsync(settings);
+            var loaded = await store.LoadAsync();
 
-        loaded.Provider.Should().Be(HermesProviderNames.OpenAI);
-        loaded.OpenAI.ApiKey.Should().Be("test-key");
-        loaded.OpenAI.Model.Should().Be("gpt-4.1");
+            loaded.Provider.Should().Be(HermesProviderNames.OpenAI);
+            loaded.OpenAI.ApiKey.Should().Be("test-key");
+            loaded.OpenAI.Model.Should().Be("gpt-4.1");
+
+            var persisted = await File.ReadAllTextAsync(store.ConfigPath);
+            persisted.Should().NotContain("test-key");
+            persisted.Should().NotContain("\"ApiKey\":");
+            secretStore.TryGet(HermesSecretKeys.OpenAiApiKey, out var storedKey).Should().BeTrue();
+            storedKey.Should().Be("test-key");
+        }
+        finally
+        {
+            Directory.Delete(directory, recursive: true);
+        }
     }
 
     [Fact]

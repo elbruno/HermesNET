@@ -132,3 +132,9 @@ Team (Dallas, Parker, Ash, Lambert) identified 7 architectural blockers. Ripley 
 - M3→M4 boundary: Formal MAF integration review; validate custom stack MAF-compatibility (no breaking changes)
 - T33–T35 workstreams released for parallel execution without MAF blocker
 
+
+## Scribe Sync — 2026-05-23
+- Secure settings moved to native OS credential storage; Data Protection-only approach rejected.
+- MAF evaluation logged as a later debt item after the M2 custom ship path.
+- v0.1.0 release path confirmed through centralized versioning and trusted publishing.
+

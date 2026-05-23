@@ -33,6 +33,8 @@ This creates a config file at:
 - **Windows:** `%APPDATA%\Hermes\appsettings.json`
 - **macOS/Linux:** `~/.hermes/appsettings.json`
 
+OpenAI API keys are stored in the native OS credential store and are not written to the JSON config file.
+
 ### 3. Run a sample prompt
 
 ```bash
@@ -59,7 +61,7 @@ hermesnet chat --profile default --message "Hello! What is 2+2?"
 - **[User Guide](./docs/user-guide.md)** — Core concepts (profiles, sessions, memory)
 
 ### Release & Publishing
-- **[Release Notes v2.0.1](./docs/release-notes-v2.0.1.md)** — Latest features
+- **[Release Notes v2.0.2](./docs/release-notes-v2.0.2.md)** — Latest features
 - **[Publishing Guide](./docs/publishing.md)** — Release & NuGet publishing
 
 ### Architecture & Testing

@@ -41,4 +41,14 @@
 ### Previous Milestones (M1, Early M2)
 See `lambert/history-archive.md` for M1 test strategy lock, quality gate documentation, CLI smoke test framework, and early test scaffolding work.
 
+## Learnings
+- `src\Hermes.Cli\Configuration\HermesCliConfigStore.cs`: legacy OpenAI API key migration must redact JSON first, then write to secure storage; if secure-write fails, throw and keep the file scrubbed.
+- `tests\Hermes.Core.Tests\Configuration\HermesSecureSettingsTests.cs`: fail-closed migration needs a negative test that proves plaintext is removed even when secret persistence throws.
+- Secure settings paths remain split between CLI config persistence and core secret-provider loading; tests should cover both plaintext migration and masked runtime reads.
+
+
+## Scribe Sync — 2026-05-23
+- Test audit note merged: ProfileAndSessionServiceTests rerun passed 31/31 with no failures.
+- Fail-closed secret migration and regression coverage are now captured in canonical decisions.
+- v0.1.0 release review note was merged alongside the NuGet publishing decision.
 

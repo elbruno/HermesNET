@@ -269,6 +269,7 @@ hermes session current
 - **Error Contract Consistency** — Extends M1-011; all M2 store operations throw `KeyNotFoundException` on missing IDs
 - **Blocked Tests as Living Contracts** — All scaffolds have `Skip = "Blocked: [interface]..."` to compile immediately; removal signals implementation completion
 - **REST API Contract Tests Required** — All endpoints require tests in `Hermes.Integration.Tests/`; OpenAPI spec committed before M2 Go/No-Go
+- **Follow-up Audit:** `tests/Hermes.Core.Tests/Profiles/ProfileAndSessionServiceTests.cs` re-run on 2026-05-22; 31/31 pass, 0 failures found.
 
 **Pre-Existing Failures Found:**
 | Test | Expected | Actual |
@@ -409,6 +410,114 @@ catch (KeyNotFoundException)
 **Go/No-Go for M3:** ✅ M3 proceeds without MAF dependency. R2 isolation proven. T33–T35 workstreams released.
 
 **Next Checkpoint:** M3→M4 boundary — MAF integration validation and custom stack MAF compatibility review.
+
+---
+
+### M2-009 — T14 Session Management Risks (Dallas)
+
+**Date:** 2026-05-22  
+**Authority:** Dallas  
+**Status:** ⚠️ FLAGGED — M3 follow-up required
+
+**Decision:** Session state is intentionally split across global app state and per-profile data for M2, but three risks must be carried into M3 planning:
+
+1. `current_session_id` is global, so switching profiles does not restore a per-profile current session.
+2. Lazy session initialization is allowed; callers must handle `null` current sessions and create them explicitly.
+3. Profile deletion does not cascade to sessions yet; orphaned rows are deferred to M3 migration work.
+
+**Coordination:** Lambert must keep the profile-switch regression skipped until the per-profile current-session key lands.
+
+**Reference:** `.squad/decisions/inbox/dallas-t14-risks.md`
+
+---
+
+### M2-010 — T17 Skill Design Decisions (Dallas)
+
+**Date:** 2026-05-22  
+**Authority:** Dallas  
+**Status:** ✅ IMPLEMENTED — decisions documented for M3 review
+
+**Decision:** Skill handling is locked for M2 with these rules:
+
+- Skill IDs are globally unique and case-insensitive across all profiles and load sources.
+- Only one active version per skill ID may exist; first registration wins.
+- Metadata remains a flexible `IReadOnlyDictionary<string, string>` with no schema enforcement in M2.
+- Supported skill types: `action`, `tool`, `skill`, `chat`, `memory`, `policy`.
+- `SkillRegistryBootstrapper` scans `config/skills/` on startup and fails fast on parse or duplicate-ID errors.
+
+**M3 Hooks:** Profile-scoped skill IDs, explicit version coexistence, and typed metadata remain open for M3 if usage grows.
+
+**References:** `.squad/decisions/inbox/dallas-t17-skill-design.md`, `.squad/decisions/inbox/dallas-m2-t13-risks-for-m3.md`
+
+---
+
+### M2-011 — R4 Latency Baseline — M2 OTel Re-Baseline (Parker)
+
+**Date:** 2026-05-22T22:40:00-04:00  
+**Authority:** Parker  
+**Status:** ✅ GREEN — no sampling change required
+
+**Decision:** M2 OTel overhead is below 1% of the M1 baseline. The absolute M2 P95 is dominated by Ollama variance, not instrumentation cost, so no adaptive sampling changes are needed for Week 2.
+
+**Reference:** `.squad/decisions/inbox/parker-r4-latency-baseline.md`
+
+---
+
+### M2-012 — Secure settings at rest (Ash)
+
+**Date:** 2026-05-23T12:53:59.238-04:00  
+**Authority:** Ash  
+**Status:** ✅ APPROVED — native credential-store approach
+
+**Decision:** Reject Data Protection as the sole secret store. Use the native OS credential store via `Devlooped.CredentialManager` for `OpenAI:ApiKey`, keep `appsettings.json` for non-secret defaults, and preserve the plaintext-to-secret migration path on first save.
+
+**Migration rule:** If legacy JSON contains `OpenAI:ApiKey`, rewrite JSON without the secret, then persist to the credential store. If secure-store persistence fails, fail closed and do not leave plaintext at rest.
+
+**References:** `.squad/decisions/inbox/ripley-secure-settings-at-rest.md`, `.squad/decisions/inbox/ash-local-secret-store.md`, `.squad/decisions/inbox/dallas-secure-settings-at-rest.md`, `.squad/decisions/inbox/lambert-fail-closed-secret-migration.md`
+
+---
+
+### M2-013 — HermesNET v0.1.0 NuGet Release Decision (Dallas)
+
+**Date:** 2026-05-23T11:11:39.297-04:00  
+**Authority:** Dallas  
+**Status:** ✅ READY FOR REVIEW
+
+**Decision:** Publish `v0.1.0` from the centralized `0.1.0` in `Directory.Build.props` using the existing GitHub Release + NuGet Trusted Publishing workflow.
+
+**Scope:** `Hermes.Core`, `Hermes.Adapters`, and the `hermesnet` global tool ship together; `Hermes.Host` remains non-packable.
+
+**Notes:** No long-lived NuGet API key should be introduced.
+
+**References:** `.squad/decisions/inbox/dallas-release-v0-1-0.md`, `.squad/decisions/inbox/lambert-release-v0-1-0.md`
+
+---
+
+### M3-002 — MAF Adoption Decision (User)
+
+**Date:** 2026-05-22T22:56:48.431-04:00  
+**Authority:** elbruno  
+**Status:** ✅ DECIDED — Ship M2 custom, refactor to MAF in M3
+
+**Decision:** Keep the current custom skill/tool/chat stack for M2. Treat the Microsoft Agent Framework migration as M3 technical debt rather than blocking the M2 ship date.
+
+**Impact:** T17/T18/T19 continue as-is, M2 ships on schedule, and the MAF migration becomes a planned M3 spike.
+
+**Reference:** `.squad/decisions/inbox/coordinator-maf-evaluation.md`
+
+---
+
+### M3-003 — M3+ Phases: CLI Tool & Documentation (User)
+
+**Date:** 2026-05-22  
+**Authority:** elbruno  
+**Status:** 📌 Captured for M3 planning
+
+**Decision:** Post-M2, publish HermesNET as a `hermesnet` dotnet tool and add end-user documentation plus runnable samples.
+
+**Planned scope:** install/run flow, command reference, skill authoring, memory management, multi-profile workflows, tool policy, observability, sample projects, troubleshooting, and API docs.
+
+**Reference:** `.squad/decisions/inbox/squad-m3-phase-directive.md`
 
 ---
 
