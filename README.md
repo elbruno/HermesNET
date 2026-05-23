@@ -1,9 +1,10 @@
 # HermesNET — .NET 10 Distributed Agent Runtime
 
-[![NuGet Core](https://img.shields.io/nuget/v/ElBruno.Hermes.Core.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Core)
-[![NuGet Adapters](https://img.shields.io/nuget/v/ElBruno.Hermes.Adapters.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Adapters)
-[![NuGet Tool](https://img.shields.io/nuget/v/ElBruno.Hermes.Tool.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Tool)
-[![NuGet Downloads](https://img.shields.io/nuget/dt/ElBruno.Hermes.Tool.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Tool)
+| Library | NuGet | Downloads |
+|---|---|---|
+| ElBruno.Hermes.Core | [![NuGet](https://img.shields.io/nuget/v/ElBruno.Hermes.Core.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Core) | [![Downloads](https://img.shields.io/nuget/dt/ElBruno.Hermes.Core.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Core) |
+| ElBruno.Hermes.Adapters | [![NuGet](https://img.shields.io/nuget/v/ElBruno.Hermes.Adapters.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Adapters) | [![Downloads](https://img.shields.io/nuget/dt/ElBruno.Hermes.Adapters.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Adapters) |
+| ElBruno.Hermes.Tool | [![NuGet](https://img.shields.io/nuget/v/ElBruno.Hermes.Tool.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Tool) | [![Downloads](https://img.shields.io/nuget/dt/ElBruno.Hermes.Tool.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Tool) |
 [![Build Status](https://github.com/elbruno/HermesNET/actions/workflows/ci.yml/badge.svg)](https://github.com/elbruno/HermesNET/actions/workflows/ci.yml)
 [![Publish Status](https://github.com/elbruno/HermesNET/actions/workflows/publish.yml/badge.svg)](https://github.com/elbruno/HermesNET/actions/workflows/publish.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-yellow.svg?style=flat-square)](LICENSE)
