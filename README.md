@@ -7,7 +7,7 @@ A comprehensive runtime for building intelligent agent applications with session
 ### As a Global .NET Tool
 
 ```bash
-dotnet tool install -g hermesnet
+dotnet tool install -g ElBruno.Hermes.Tool
 ```
 
 Then use:
@@ -21,7 +21,7 @@ hermesnet session create my-session
 ### Upgrade to latest
 
 ```bash
-dotnet tool update -g hermesnet
+dotnet tool update -g ElBruno.Hermes.Tool
 ```
 
 ## Project Structure

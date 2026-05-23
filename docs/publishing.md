@@ -7,7 +7,7 @@ HermesNET publishes NuGet packages through **GitHub Releases + NuGet Trusted Pub
 - Use the GitHub Actions `publish.yml` workflow.
 - Authenticate with NuGet via OIDC trusted publishing.
 - Do **not** store or use a long-lived NuGet API key in the repo.
-- Publish every packable package together: `Hermes.Core`, `Hermes.Adapters`, and the `hermesnet` global tool.
+- Publish every packable package together: `ElBruno.Hermes.Core`, `ElBruno.Hermes.Adapters`, and the `ElBruno.Hermes.Tool` global tool package.
 - For the v0.1.0 release, create the GitHub Release with tag `v0.1.0` or pass `version=0.1.0` to workflow dispatch.
 
 ## Setup
