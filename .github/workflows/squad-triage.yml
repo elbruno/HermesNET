@@ -1,8 +1,7 @@
 name: Squad Triage
 
 on:
-  issues:
-    types: [labeled]
+  workflow_dispatch: # disabled: auto-trigger removed
 
 permissions:
   issues: write
