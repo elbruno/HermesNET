@@ -13,6 +13,7 @@ public sealed class SessionService : ISessionService, IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly IProfileService _profileService;
+    private readonly SemaphoreSlim _writeLock = new(1, 1);
     private bool _initialized;
 
     public SessionService(string connectionString, IProfileService profileService)
@@ -58,39 +59,47 @@ public sealed class SessionService : ISessionService, IDisposable
         span?.SetTag("profile.id", profileId);
         span?.SetTag("operation", "create");
         
-        EnsureInitialized();
-
-        // Verify the owning profile exists before creating a session.
-        var profile = await _profileService.GetProfileAsync(profileId, cancellationToken)
-            ?? throw new KeyNotFoundException($"Profile '{profileId}' not found.");
-
-        var now = DateTimeOffset.UtcNow;
-        var session = new ProfileSession
+        await _writeLock.WaitAsync(cancellationToken);
+        try
         {
-            Id = Guid.NewGuid().ToString(),
-            ProfileId = profileId,
-            Name = name,
-            CreatedAt = now,
-            LastAccessed = now,
-            Metadata = null
-        };
-        
-        span?.SetTag("session.id", session.Id);
+            EnsureInitialized();
 
-        using var cmd = _connection.CreateCommand();
-        cmd.CommandText = """
-            INSERT INTO ProfileSessions (Id, ProfileId, Name, CreatedAt, LastAccessed, Metadata)
-            VALUES (@id, @profileId, @name, @createdAt, @lastAccessed, @metadata);
-            """;
-        cmd.Parameters.AddWithValue("@id", session.Id);
-        cmd.Parameters.AddWithValue("@profileId", session.ProfileId);
-        cmd.Parameters.AddWithValue("@name", session.Name);
-        cmd.Parameters.AddWithValue("@createdAt", session.CreatedAt.ToString("O"));
-        cmd.Parameters.AddWithValue("@lastAccessed", session.LastAccessed.ToString("O"));
-        cmd.Parameters.AddWithValue("@metadata", session.Metadata ?? (object)DBNull.Value);
+            // Verify the owning profile exists before creating a session.
+            var profile = await _profileService.GetProfileAsync(profileId, cancellationToken)
+                ?? throw new KeyNotFoundException($"Profile '{profileId}' not found.");
 
-        await cmd.ExecuteNonQueryAsync(cancellationToken);
-        return session;
+            var now = DateTimeOffset.UtcNow;
+            var session = new ProfileSession
+            {
+                Id = Guid.NewGuid().ToString(),
+                ProfileId = profileId,
+                Name = name,
+                CreatedAt = now,
+                LastAccessed = now,
+                Metadata = null
+            };
+            
+            span?.SetTag("session.id", session.Id);
+
+            using var cmd = _connection.CreateCommand();
+            cmd.CommandText = """
+                INSERT INTO ProfileSessions (Id, ProfileId, Name, CreatedAt, LastAccessed, Metadata)
+                VALUES (@id, @profileId, @name, @createdAt, @lastAccessed, @metadata);
+                """;
+            cmd.Parameters.AddWithValue("@id", session.Id);
+            cmd.Parameters.AddWithValue("@profileId", session.ProfileId);
+            cmd.Parameters.AddWithValue("@name", session.Name);
+            cmd.Parameters.AddWithValue("@createdAt", session.CreatedAt.ToString("O"));
+            cmd.Parameters.AddWithValue("@lastAccessed", session.LastAccessed.ToString("O"));
+            cmd.Parameters.AddWithValue("@metadata", session.Metadata ?? (object)DBNull.Value);
+
+            await cmd.ExecuteNonQueryAsync(cancellationToken);
+            return session;
+        }
+        finally
+        {
+            _writeLock.Release();
+        }
     }
 
     public async Task<ProfileSession?> GetSessionAsync(string id, CancellationToken cancellationToken = default)
@@ -305,7 +314,11 @@ public sealed class SessionService : ISessionService, IDisposable
             yield return s;
     }
 
-    public void Dispose() => _connection.Dispose();
+    public void Dispose()
+    {
+        _writeLock.Dispose();
+        _connection.Dispose();
+    }
 
     private async Task<string?> GetAppStateAsync(string key, CancellationToken cancellationToken)
     {
