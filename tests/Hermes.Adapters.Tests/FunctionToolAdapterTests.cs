@@ -209,7 +209,7 @@ public sealed class FunctionToolAdapterTests
         var result = await _adapter.ProjectFunctionToolsAsync(registryMock.Object);
 
         // Assert
-        result.Should().HaveCountGreaterOrEqualTo(2);
+        result.Should().HaveCountGreaterThanOrEqualTo(2);
         result.Should().Contain(d => d.Name == "read-file" && d.IsAllowed);
         result.Should().Contain(d => d.Name == "write-file" && !d.IsAllowed);
     }

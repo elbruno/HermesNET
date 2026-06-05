@@ -70,10 +70,10 @@ public sealed class SessionLoadTest
         _output.WriteLine($"QUERY   P50={p50QueryUs}µs  P95={p95QueryUs}µs ({p95QueryMs}ms)  P99={p99QueryUs}µs");
 
         // ── Part C: Assert hard gates (budgets in milliseconds) ───────────────
-        p95InsertMs.Should().BeLessOrEqualTo(50,
+        p95InsertMs.Should().BeLessThanOrEqualTo(50,
             $"P95 insert = {p95InsertUs}µs ({p95InsertMs}ms) must be ≤ 50ms (R5-A budget)");
 
-        p95QueryMs.Should().BeLessOrEqualTo(20,
+        p95QueryMs.Should().BeLessThanOrEqualTo(20,
             $"P95 query = {p95QueryUs}µs ({p95QueryMs}ms) must be ≤ 20ms (R5-A budget)");
 
         // ── Part D: Write results to docs/benchmarks/m1-session-load.md ───────

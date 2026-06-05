@@ -603,7 +603,7 @@ public sealed class SessionStoreTests : IAsyncLifetime
         // Assert — R5-A hard gate: P95 ≤ 20 ms
         var p95 = Percentile(times, 95);
         _output.WriteLine($"[R5-A] ListRecentAsync(1000 rows) P95 = {p95} ms over {runs} runs");
-        p95.Should().BeLessOrEqualTo(20,
+        p95.Should().BeLessThanOrEqualTo(20,
             $"R5-A gate: P95 query latency must be ≤ 20 ms at 1,000 rows, was {p95} ms");
     }
 
