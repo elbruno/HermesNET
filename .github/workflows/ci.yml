@@ -42,7 +42,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         # Find the coverage file
-        coverage_file=$(find . -name "coverage.opencover.xml" -type f | head -1)
+        coverage_file=$(find . -type f \( -name "coverage.cobertura.xml" -o -name "coverage.opencover.xml" \) | head -1)
         if [ -z "$coverage_file" ]; then
           echo "❌ Coverage file not found"
           exit 1
@@ -53,7 +53,7 @@ jobs:
       if: runner.os == 'Linux'
       run: |
         # Parse coverage XML and extract Hermes.Core branch coverage percentage
-        coverage_file=$(find . -name "coverage.opencover.xml" -type f | head -1)
+        coverage_file=$(find . -type f \( -name "coverage.cobertura.xml" -o -name "coverage.opencover.xml" \) | head -1)
         
         if [ -z "$coverage_file" ]; then
           echo "❌ Coverage file not found"
