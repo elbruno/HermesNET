@@ -12,6 +12,7 @@ namespace Hermes.Core.Profiles;
 public sealed class ProfileService : IProfileService, IDisposable
 {
     private readonly SqliteConnection _connection;
+    private readonly SemaphoreSlim _writeLock = new(1, 1);
     private bool _initialized;
 
     public ProfileService(string connectionString)
@@ -53,40 +54,48 @@ public sealed class ProfileService : IProfileService, IDisposable
         using var span = TelemetryProvider.GetActivitySource().StartActivity("ProfileService.CreateAsync");
         span?.SetTag("operation", "create");
         
-        EnsureInitialized();
-
-        var profile = new Profile
-        {
-            Id = Guid.NewGuid().ToString(),
-            Name = name,
-            Description = description,
-            CreatedAt = DateTimeOffset.UtcNow,
-            UpdatedAt = DateTimeOffset.UtcNow
-        };
-        
-        span?.SetTag("profile.id", profile.Id);
-
-        using var cmd = _connection.CreateCommand();
-        cmd.CommandText = """
-            INSERT INTO Profiles (Id, Name, Description, CreatedAt, UpdatedAt)
-            VALUES (@id, @name, @desc, @createdAt, @updatedAt);
-            """;
-        cmd.Parameters.AddWithValue("@id", profile.Id);
-        cmd.Parameters.AddWithValue("@name", profile.Name);
-        cmd.Parameters.AddWithValue("@desc", profile.Description ?? (object)DBNull.Value);
-        cmd.Parameters.AddWithValue("@createdAt", profile.CreatedAt.ToString("O"));
-        cmd.Parameters.AddWithValue("@updatedAt", profile.UpdatedAt.ToString("O"));
-
+        await _writeLock.WaitAsync(cancellationToken);
         try
         {
-            await cmd.ExecuteNonQueryAsync(cancellationToken);
-        }
-        catch (SqliteException ex) when (ex.SqliteErrorCode == 19) // SQLITE_CONSTRAINT
-        {
-            throw new InvalidOperationException($"A profile named '{name}' already exists.");
-        }
+            EnsureInitialized();
 
-        return profile;
+            var profile = new Profile
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = name,
+                Description = description,
+                CreatedAt = DateTimeOffset.UtcNow,
+                UpdatedAt = DateTimeOffset.UtcNow
+            };
+            
+            span?.SetTag("profile.id", profile.Id);
+
+            using var cmd = _connection.CreateCommand();
+            cmd.CommandText = """
+                INSERT INTO Profiles (Id, Name, Description, CreatedAt, UpdatedAt)
+                VALUES (@id, @name, @desc, @createdAt, @updatedAt);
+                """;
+            cmd.Parameters.AddWithValue("@id", profile.Id);
+            cmd.Parameters.AddWithValue("@name", profile.Name);
+            cmd.Parameters.AddWithValue("@desc", profile.Description ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("@createdAt", profile.CreatedAt.ToString("O"));
+            cmd.Parameters.AddWithValue("@updatedAt", profile.UpdatedAt.ToString("O"));
+
+            try
+            {
+                await cmd.ExecuteNonQueryAsync(cancellationToken);
+            }
+            catch (SqliteException ex) when (ex.SqliteErrorCode == 19) // SQLITE_CONSTRAINT
+            {
+                throw new InvalidOperationException($"A profile named '{name}' already exists.");
+            }
+
+            return profile;
+        }
+        finally
+        {
+            _writeLock.Release();
+        }
     }
 
     public async Task<Profile?> GetProfileAsync(string id, CancellationToken cancellationToken = default)
@@ -236,7 +245,11 @@ public sealed class ProfileService : IProfileService, IDisposable
         return await GetProfileAsync(currentId, cancellationToken);
     }
 
-    public void Dispose() => _connection.Dispose();
+    public void Dispose()
+    {
+        _writeLock.Dispose();
+        _connection.Dispose();
+    }
 
     private async Task<Profile?> QuerySingleAsync(
         string whereClause,

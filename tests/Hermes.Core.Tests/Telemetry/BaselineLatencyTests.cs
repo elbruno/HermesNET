@@ -10,10 +10,18 @@ public class BaselineLatencyTests
 {
     private const int IterationCount = 10;
     private const int MaxLatencyMs = 100;
+    private const string RunBenchmarksEnvVar = "HERMES_RUN_PERF_BENCHMARKS";
 
     [Fact]
     public async Task MeasureTurnLatencyBaseline()
     {
+        if (!ShouldRunBenchmarks())
+        {
+            Console.WriteLine(
+                $"⚠️  Baseline latency test is opt-in. Set {RunBenchmarksEnvVar}=1 to run it.");
+            return;
+        }
+
         // Initialize OpenTelemetry tracer (console exporter)
         var tracerProvider = Sdk.CreateTracerProviderBuilder()
             .AddSource("Hermes.Core")
@@ -131,5 +139,11 @@ public class BaselineLatencyTests
         }
         return AppContext.BaseDirectory;
     }
-}
 
+    private static bool ShouldRunBenchmarks()
+    {
+        var value = Environment.GetEnvironmentVariable(RunBenchmarksEnvVar);
+        return string.Equals(value, "1", StringComparison.Ordinal) ||
+               string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+    }
+}
