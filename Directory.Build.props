@@ -8,6 +8,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <NoWarn>$(NoWarn);NU1902;NU1603</NoWarn>
     <Version>0.1.0</Version>
     <Authors>Bruno Capuano;Copilot</Authors>
