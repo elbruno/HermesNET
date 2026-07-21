@@ -6,7 +6,7 @@ using Hermes.Core.Configuration;
 using Hermes.Host;
 using Hermes.Host.Middleware;
 using Hermes.Host.Providers;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
