@@ -10,7 +10,7 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
     <NoWarn>$(NoWarn);NU1902;NU1603</NoWarn>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
     <Authors>Bruno Capuano;Copilot</Authors>
     <Description>HermesNET distributed agent runtime components.</Description>
     <PackageTags>agent;runtime;skills;tools;ai;distributed</PackageTags>
