@@ -11,12 +11,10 @@ namespace Hermes.Host.Controllers;
 public sealed class SessionsController : ControllerBase
 {
     private readonly ISessionService _sessionService;
-    private readonly IProfileService _profileService;
 
-    public SessionsController(ISessionService sessionService, IProfileService profileService)
+    public SessionsController(ISessionService sessionService)
     {
         _sessionService = sessionService;
-        _profileService = profileService;
     }
 
     /// <summary>List all sessions, optionally filtered by profileId.</summary>
@@ -45,10 +43,6 @@ public sealed class SessionsController : ControllerBase
         CancellationToken ct)
     {
         using var span = TelemetryProvider.GetActivitySource().StartActivity("hermes.api.sessions.create");
-
-        var profile = await _profileService.GetProfileAsync(req.ProfileId, ct);
-        if (profile is null)
-            return NotFound(new ErrorResponse($"Profile '{req.ProfileId}' not found"));
 
         var session = await _sessionService.CreateSessionAsync(req.ProfileId, req.Name, ct);
         span?.SetTag("session.id", session.Id);
