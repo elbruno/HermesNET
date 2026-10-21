@@ -1,5 +1,7 @@
 # HermesNET — .NET 10 Distributed Agent Runtime
 
+> **Archive notice:** This repository was created as a test project and will be archived.
+
 | Library | NuGet | Downloads |
 |---|---|---|
 | ElBruno.Hermes.Core | [![NuGet](https://img.shields.io/nuget/v/ElBruno.Hermes.Core.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Core) | [![Downloads](https://img.shields.io/nuget/dt/ElBruno.Hermes.Core.svg?style=flat-square&logo=nuget)](https://www.nuget.org/packages/ElBruno.Hermes.Core) |
